@@ -6,14 +6,14 @@ import { Label } from "@/components/ui/label";
 import { MapPin, Loader2, CheckCircle, Search } from "lucide-react";
 import InteractiveMap from "./IntercativeMap";
 
-const LocationStep = () => {
+const LocationStep = ({selectedLocation,setSelectedLocation}) => {
   const [cityName, setCityName] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState(null)
+ 
   const searchContainerRef = useRef(null);
 
   // search cities

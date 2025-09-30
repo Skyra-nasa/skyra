@@ -6,8 +6,8 @@ import { DatePicker } from './DatePicker';
 
 
 
-const DateStep = () => {
-    const [date, setDate] = useState();
+const DateStep = ({date, setDate}) => {
+    
 
     // When user picks a date we want to mark the step as ready immediately:
     const handleDateChange = (selected) => {

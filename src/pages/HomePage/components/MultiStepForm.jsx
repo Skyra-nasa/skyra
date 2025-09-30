@@ -5,6 +5,8 @@ import { Progress } from "@/components/ui/progress";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import LocationStep from "./steps/detectLocation/LocationStep";
 import DateStep from "./steps/detectTime/DateStep";
+import ReviewStep from "./steps/reviewData/ReviewStep";
+import { useNavigate } from "react-router-dom";
 
 
 const MultistepForm = () => {
@@ -12,7 +14,9 @@ const MultistepForm = () => {
     const totalSteps = 3;
     const progress = (currentStep / totalSteps) * 100;
     const stepTitles = ["Select Location", "Choose Date & Time"];
-
+    const [selectedLocation, setSelectedLocation] = useState(null);
+    const [date, setDate] = useState();
+    const navigate = useNavigate()
     const handleNext = () => {
         if (currentStep < totalSteps) {
             setCurrentStep(currentStep + 1);
@@ -23,7 +27,23 @@ const MultistepForm = () => {
             setCurrentStep(currentStep - 1);
         }
     };
-
+    const canProceedToNext = () => {
+        switch (currentStep) {
+            case 1:
+                return !!selectedLocation;
+            case 2:
+                return !!date;
+            case 3:
+                return selectedLocation && date;
+            default:
+                return false;
+        }
+    };
+    // Send Api
+    const handleAnalyze = () => {
+        console.log("selectedLocation", selectedLocation, "date", date);
+        navigate("/dashboard")
+    };
     return (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-20">
             {/* Progress */}
@@ -58,10 +78,19 @@ const MultistepForm = () => {
             {/* Step Content */}
             <div className="space-y-6">
                 {currentStep === 1 && (
-                    <LocationStep />
+                    <LocationStep
+                        selectedLocation={selectedLocation}
+                        setSelectedLocation={setSelectedLocation} />
                 )}
                 {currentStep === 2 && (
-                    <DateStep />
+                    <DateStep
+                        date={date}
+                        setDate={setDate} />
+                )}
+                {currentStep === 3 && (
+                    <ReviewStep
+                        selectedLocation={selectedLocation}
+                        date={date} />
                 )}
             </div>
 
@@ -79,15 +108,16 @@ const MultistepForm = () => {
                         </Button>
 
                         {currentStep < totalSteps ? (
-                            <Button onClick={handleNext} >
+                            <Button onClick={handleNext} size="lg" className="cursor-pointer px-8" disabled={!canProceedToNext()} >
                                 Next
                                 <ChevronRight className="h-4 w-4 ml-2" />
                             </Button>
                         ) : (
                             <Button
                                 onClick={handleAnalyze}
+                                disabled={!canProceedToNext()}
                                 size="lg"
-                                className="px-8"
+                                className="px-8 cursor-pointer"
                             >
                                 Analyze Weather
                             </Button>
