@@ -157,19 +157,27 @@ const LocationStep = ({selectedLocation,setSelectedLocation}) => {
 
                 {/* Search Suggestions Dropdown */}
                 {showSuggestions && searchResults.length > 0 && (
-                  <div className="absolute z-50 w-full mt-1 bg-background border rounded-lg shadow-lg max-h-60 overflow-y-auto">
-                    {searchResults.map((result) => (
-                      <button
-                        key={result.place_id}
-                        className="w-full text-left px-3 py-2 hover:bg-accent hover:text-accent-foreground border-b border-border last:border-b-0 transition-colors"
-                        onClick={() => handleCitySelect(result)}
-                      >
-                        <div className="font-medium">{result.name}</div>
-                        <div className="text-xs text-muted-foreground truncate">
-                          {result.display_name}
-                        </div>
-                      </button>
-                    ))}
+                  <div className="absolute z-50 w-full mt-1 rounded-xl bg-card/90 backdrop-blur-xl border border-border/50 shadow-[0_8px_28px_-10px_rgba(0,0,0,0.45),0_2px_6px_-2px_rgba(0,0,0,0.35)]">
+                    <div className="max-h-60 overflow-y-auto thin-scrollbar overscroll-contain rounded-xl">
+                      {searchResults.map((result, idx) => (
+                        <button
+                          key={result.place_id}
+                          className="group relative w-full text-left px-4 py-2.5 text-sm outline-none transition-all duration-300 focus:bg-accent/70 focus:text-accent-foreground hover:bg-accent/60 hover:text-accent-foreground/95"
+                          onClick={() => handleCitySelect(result)}
+                        >
+                          <div className="font-medium leading-tight truncate flex items-center gap-2">
+                            <span className="inline-block size-1.5 rounded-full bg-gradient-to-r from-primary to-chart-2 group-hover:from-chart-2 group-hover:to-primary transition-all" />
+                            {result.name}
+                          </div>
+                          <div className="text-[11px] text-muted-foreground/70 group-hover:text-accent-foreground/80 truncate tracking-wide">
+                            {result.display_name}
+                          </div>
+                          {idx !== searchResults.length - 1 && (
+                            <span className="pointer-events-none absolute left-3 right-3 bottom-0 h-px bg-border/50" />
+                          )}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
@@ -199,7 +207,7 @@ const LocationStep = ({selectedLocation,setSelectedLocation}) => {
                   step="any"
                   min="-90"
                   max="90"
-                  className="h-11"
+                  className="h-11 rounded-xl bg-background/60 dark:bg-input/40 hover:bg-background/80 focus-visible:bg-background/90 transition-colors border-border/60 focus-visible:border-primary/60 pr-9 number-modern"
                 />
                 <Input
                   placeholder="Longitude"
@@ -209,7 +217,7 @@ const LocationStep = ({selectedLocation,setSelectedLocation}) => {
                   step="any"
                   min="-180"
                   max="180"
-                  className="h-11"
+                  className="h-11 rounded-xl bg-background/60 dark:bg-input/40 hover:bg-background/80 focus-visible:bg-background/90 transition-colors border-border/60 focus-visible:border-primary/60 pr-9 number-modern"
                 />
                 <Button
                   onClick={handleCoordinateSubmit}

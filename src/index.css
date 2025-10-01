@@ -172,6 +172,21 @@ body {
   letter-spacing: var(--tracking-normal);
 }
 
+/* Utility: hide scrollbars while preserving scroll functionality */
+@layer utilities {
+  .hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+  .hide-scrollbar::-webkit-scrollbar { width: 0; height: 0; }
+  .thin-scrollbar { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .thin-scrollbar::-webkit-scrollbar { width: 6px; }
+  .thin-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .thin-scrollbar::-webkit-scrollbar-thumb { background: color-mix(in oklch, var(--border) 70%, black 10%); border-radius: 999px; }
+  .thin-scrollbar::-webkit-scrollbar-thumb:hover { background: color-mix(in oklch, var(--border) 55%, black 25%); }
+  .number-modern::-webkit-outer-spin-button,
+  .number-modern::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .number-modern[type=number] { -moz-appearance: textfield; appearance: textfield; }
+  .number-modern { font-variant-numeric: tabular-nums; }
+}
+
 @layer base {
   * {
     @apply border-border;
