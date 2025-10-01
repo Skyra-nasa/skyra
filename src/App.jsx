@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom"
 import HomePage from "./pages/HomePage/HomePage"
 import Dashboard from "./pages/Dashboard/Dashboard"
-
+import BubbleMenu from "./pages/HomePage/components/steps/detectActivity/ActivityBubbles" 
 function App() {
 
   return (
@@ -9,6 +9,8 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+
+
       </Routes>
     </div>
   )

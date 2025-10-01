@@ -31,6 +31,7 @@ const LocationStep = ({selectedLocation,setSelectedLocation}) => {
           query
         )}&limit=5&addressdetails=1&featuretype=city`
       );
+      
 
       if (!response.ok) throw new Error("Search failed");
 
