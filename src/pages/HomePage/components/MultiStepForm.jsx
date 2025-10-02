@@ -1,33 +1,36 @@
 import React, { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import LocationStep from "./steps/detectLocation/LocationStep";
 import DateStep from "./steps/detectTime/DateStep";
 import ReviewStep from "./steps/reviewData/ReviewStep";
+import ActivityStep from "./steps/detectActivity/ActivityStep.jsx";
 import { useNavigate } from "react-router-dom";
-import ActivityStep from "./steps/detectActivity/ActivityStep.jsx"
 
 const MultistepForm = () => {
     const [currentStep, setCurrentStep] = useState(1);
-    const totalSteps = 3;
+    const totalSteps = 4;
     const progress = (currentStep / totalSteps) * 100;
-    const stepTitles = ["Select Activity","Select Location", "Choose Date & Time"];
+
+    const stepTitles = ["Select Activity", "Select Location", "Choose Date & Time", "Review Data"];
+
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [selectedLocation, setSelectedLocation] = useState(null);
     const [date, setDate] = useState();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
     const handleNext = () => {
         if (currentStep < totalSteps) {
             setCurrentStep(currentStep + 1);
         }
     };
+
     const handlePrevious = () => {
         if (currentStep > 1) {
             setCurrentStep(currentStep - 1);
         }
     };
+
     const canProceedToNext = () => {
         switch (currentStep) {
             case 1:
@@ -40,11 +43,13 @@ const MultistepForm = () => {
                 return false;
         }
     };
+
     // Send Api
     const handleAnalyze = () => {
         console.log("selectedActivity", selectedActivity, "selectedLocation", selectedLocation, "date", date);
-        navigate("/dashboard")
+        navigate("/dashboard");
     };
+
     return (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-20 space-y-8">
             {currentStep === 1 ? (
@@ -65,23 +70,33 @@ const MultistepForm = () => {
                 <div className="space-y-4">
                     <div className="flex justify-between items-center">
                         <h2 className="text-2xl font-bold">Weather Analysis Setup</h2>
-                        <div className="text-sm text-muted-foreground">Step {currentStep} of {totalSteps}</div>
+                        <div className="text-sm text-muted-foreground">
+                            Step {currentStep} of {totalSteps}
+                        </div>
                     </div>
                     <div className="space-y-2">
                         <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-                            <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${progress}%` }} />
+                            <div
+                                className="h-full bg-primary rounded-full transition-all"
+                                style={{ width: `${progress}%` }}
+                            />
                         </div>
                         <div className="flex justify-between text-xs">
                             {stepTitles.map((title, index) => (
-                                <span key={index} className={`${index + 1 <= currentStep ? 'text-primary font-medium' : 'text-muted-foreground'}`}>{title}</span>
+                                <span
+                                    key={index}
+                                    className={`${index + 1 <= currentStep ? "text-primary font-medium" : "text-muted-foreground"}`}
+                                >
+                                    {title}
+                                </span>
                             ))}
                         </div>
                     </div>
                 </div>
             )}
+
             {/* Step Content */}
             <div className="space-y-6">
-                
                 {currentStep === 1 && (
                     <ActivityStep
                         selectedActivity={selectedActivity}
@@ -90,44 +105,41 @@ const MultistepForm = () => {
                     />
                 )}
                 {currentStep === 2 && (
-                     <LocationStep
+                    <LocationStep
                         selectedLocation={selectedLocation}
-                        setSelectedLocation={setSelectedLocation} />
-                   
+                        setSelectedLocation={setSelectedLocation}
+                    />
                 )}
-                {currentStep === 3 && (
-                    <DateStep
-                        date={date}
-                        setDate={setDate} />
-                )}
-                    {currentStep === 4 && (
+                {currentStep === 3 && <DateStep date={date} setDate={setDate} />}
+                {currentStep === 4 && (
                     <ReviewStep
+                        // selectedActivity={selectedActivity}
                         selectedLocation={selectedLocation}
-                        date={date} />
+                        date={date}
+                    />
                 )}
-
             </div>
 
             {/* Navigation (hidden on step 1 except top skip) */}
             {currentStep !== 1 && (
                 <div className="mt-4 flex justify-between">
-                    <Button
-                        variant="outline"
-                        onClick={handlePrevious}
-                        disabled={currentStep === 1}
-                    >
+                    <Button variant="outline" onClick={handlePrevious} disabled={currentStep === 1}>
                         <ChevronLeft className="h-4 w-4 mr-2" />
                         Previous
                     </Button>
                     {currentStep < totalSteps ? (
-                        <Button onClick={handleNext} size="lg" className="cursor-pointer px-8" disabled={!canProceedToNext()} >
+                        <Button
+                            onClick={handleNext}
+                            size="lg"
+                            className="cursor-pointer px-8"
+                            disabled={!canProceedToNext()}
+                        >
                             Next
                             <ChevronRight className="h-4 w-4 ml-2" />
                         </Button>
                     ) : (
                         <Button
                             onClick={handleAnalyze}
-                            disabled={!canProceedToNext()}
                             size="lg"
                             className="px-8 cursor-pointer"
                         >
