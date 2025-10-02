@@ -11,5 +11,18 @@
 .react-calendar__tile:enabled:focus,
 .react-calendar__navigation button:enabled:hover,
 .react-calendar__navigation button:enabled:focus {
-  background-color: var(--chart-5);
+  background: #673ab7;
+  color: white;
+}
+
+.react-calendar__tile--now {
+  background: #6e54a2cc;
+  color: white;
+}
+.react-calendar__month-view__days__day--weekend {
+  color: #ab47bc;
+}
+.react-calendar__tile--active {
+  background: #673ab7;
+  color: white;
 }

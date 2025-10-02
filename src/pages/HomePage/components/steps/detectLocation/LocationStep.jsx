@@ -1,22 +1,23 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import debounce from "lodash.debounce";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { MapPin, Loader2, CheckCircle, Search } from "lucide-react";
+import { MapPin, Loader2, Search } from "lucide-react";
 import InteractiveMap from "./IntercativeMap";
 
-const LocationStep = ({selectedLocation,setSelectedLocation}) => {
+const LocationStep = ({ selectedLocation, setSelectedLocation }) => {
   const [cityName, setCityName] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
- 
+
   const searchContainerRef = useRef(null);
 
-  // search cities
+  // API search function
   const searchCities = async (query) => {
     if (!query.trim() || query.length < 2) {
       setSearchResults([]);
@@ -31,7 +32,6 @@ const LocationStep = ({selectedLocation,setSelectedLocation}) => {
           query
         )}&limit=5&addressdetails=1&featuretype=city`
       );
-      
 
       if (!response.ok) throw new Error("Search failed");
 
@@ -55,6 +55,20 @@ const LocationStep = ({selectedLocation,setSelectedLocation}) => {
     }
   };
 
+  // Wrap with debounce
+  const debouncedSearch = useCallback(
+    debounce((value) => {
+      searchCities(value);
+    }, 500),
+    []
+  );
+
+  const handleCityChange = (e) => {
+    const value = e.target.value;
+    setCityName(value);
+    debouncedSearch(value);
+  };
+
   const handleCitySelect = (result) => {
     const location = {
       lat: parseFloat(result.lat),
@@ -68,7 +82,7 @@ const LocationStep = ({selectedLocation,setSelectedLocation}) => {
     setShowSuggestions(false);
   };
 
-  // update lat/long inputs when selectedLocation changes
+  // update lat/long when location changes
   useEffect(() => {
     if (selectedLocation) {
       setLatitude(selectedLocation.lat.toFixed(6));
@@ -76,7 +90,7 @@ const LocationStep = ({selectedLocation,setSelectedLocation}) => {
     }
   }, [selectedLocation]);
 
-  // Close suggestions when clicking outside
+  // click outside to close
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -87,7 +101,6 @@ const LocationStep = ({selectedLocation,setSelectedLocation}) => {
         setShowSuggestions(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showSuggestions]);
@@ -112,7 +125,6 @@ const LocationStep = ({selectedLocation,setSelectedLocation}) => {
 
   return (
     <div className="flex gap-7 mt-7 max-xl:flex-wrap">
-      {/* Location Input Controls */}
       <div className="space-y-6 w-[40%] max-xl:w-full">
         <Card className="pt-0">
           <CardHeader className="bg-gradient-to-r from-primary/10 to-accent/10 border-b border-border/50 text-xl pt-5 rounded-t-xl">
@@ -135,17 +147,10 @@ const LocationStep = ({selectedLocation,setSelectedLocation}) => {
                   id="city"
                   placeholder="Type a city name..."
                   value={cityName}
-                  onChange={(e) => setCityName(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      searchCities(cityName);
-                    }
-                  }}
+                  onChange={handleCityChange}
                   onFocus={() => setShowSuggestions(searchResults.length > 0)}
                   className="pr-10 h-11"
                 />
-                {/* Loader or Search Icon */}
                 {isSearching ? (
                   <Loader2 className="h-4 w-4 absolute right-3 top-1/2 transform -translate-y-1/2 animate-spin text-muted-foreground" />
                 ) : (
@@ -154,8 +159,6 @@ const LocationStep = ({selectedLocation,setSelectedLocation}) => {
                     onClick={() => searchCities(cityName)}
                   />
                 )}
-
-                {/* Search Suggestions Dropdown */}
                 {showSuggestions && searchResults.length > 0 && (
                   <div className="absolute z-50 w-full mt-1 rounded-xl bg-card/90 backdrop-blur-xl border border-border/50 shadow-[0_8px_28px_-10px_rgba(0,0,0,0.45),0_2px_6px_-2px_rgba(0,0,0,0.35)]">
                     <div className="max-h-60 overflow-y-auto thin-scrollbar overscroll-contain rounded-xl">
@@ -195,9 +198,11 @@ const LocationStep = ({selectedLocation,setSelectedLocation}) => {
               </div>
             </div>
 
-            {/* Coordinate Input */}
+            {/* Coordinates Input */}
             <div className="space-y-2">
-              <Label className="mb-2.5 text-base font-medium">Enter Coordinates</Label>
+              <Label className="mb-2.5 text-base font-medium">
+                Enter Coordinates
+              </Label>
               <div className="grid grid-cols-3 gap-2">
                 <Input
                   placeholder="Latitude"
@@ -207,7 +212,10 @@ const LocationStep = ({selectedLocation,setSelectedLocation}) => {
                   step="any"
                   min="-90"
                   max="90"
-                  className="h-11 rounded-xl bg-background/60 dark:bg-input/40 hover:bg-background/80 focus-visible:bg-background/90 transition-colors border-border/60 focus-visible:border-primary/60 pr-9 number-modern"
+                  className="h-11 rounded-xl bg-background/60 dark:bg-input/40 
+             hover:bg-background/80 focus-visible:bg-background/90 
+             transition-colors border border-border/60 
+             focus-visible:border-primary/60 px-5 number-modern"
                 />
                 <Input
                   placeholder="Longitude"
@@ -217,7 +225,10 @@ const LocationStep = ({selectedLocation,setSelectedLocation}) => {
                   step="any"
                   min="-180"
                   max="180"
-                  className="h-11 rounded-xl bg-background/60 dark:bg-input/40 hover:bg-background/80 focus-visible:bg-background/90 transition-colors border-border/60 focus-visible:border-primary/60 pr-9 number-modern"
+                  className="h-11 rounded-xl bg-background/60 dark:bg-input/40 
+             hover:bg-background/80 focus-visible:bg-background/90 
+             transition-colors border border-border/60 
+             focus-visible:border-primary/60 px-5 number-modern"
                 />
                 <Button
                   onClick={handleCoordinateSubmit}
@@ -230,34 +241,11 @@ const LocationStep = ({selectedLocation,setSelectedLocation}) => {
             </div>
           </CardContent>
         </Card>
-
-        {/* Selected Location Display */}
-        {selectedLocation && (
-          <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
-            <CardContent className="pt-6">
-              <div className="flex items-start gap-3">
-                <CheckCircle className="h-5 w-5 text-primary mt-0.5" />
-                <div className="space-y-1">
-                  <p className="font-medium">Location Selected</p>
-                  <p className="text-sm text-muted-foreground">
-                    {selectedLocation.lat.toFixed(4)},{" "}
-                    {selectedLocation.lon.toFixed(4)}
-                    {selectedLocation?.name && (
-                      <span className="block">{selectedLocation.name}</span>
-                    )}
-                  </p>
-                </div>
-              </div> 
-            </CardContent>
-          </Card>
-        )}
       </div>
-
-      {/* Interactive Map */}
       <div className="space-y-4 w-[60%] max-xl:w-full">
         <Card className="py-0">
           <CardHeader className="bg-gradient-to-r from-primary/10 to-accent/10 border-b border-border/50 text-xl pt-5 rounded-t-xl">
-            <CardTitle className="text-[22px]">Interactive Map</CardTitle>
+            <CardTitle className="flex items-center gap-2 text-[22px]">Interactive Map</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             <InteractiveMap

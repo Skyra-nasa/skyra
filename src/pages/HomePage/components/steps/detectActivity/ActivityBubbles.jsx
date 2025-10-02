@@ -101,7 +101,7 @@ export default function BubbleMenu({
       .to(el, { scale: 1.0, duration: 0.28, ease: 'elastic.out(1,0.65)' });
   }, []);
 
-  
+
   useEffect(() => {
     if (openOnLoad) {
       // call after a tick so any refs are set
@@ -109,7 +109,7 @@ export default function BubbleMenu({
       return () => clearTimeout(t);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openOnLoad]); 
+  }, [openOnLoad]);
 
   useEffect(() => {
     const overlay = overlayRef.current;
@@ -120,7 +120,7 @@ export default function BubbleMenu({
     if (isMenuOpen) {
       gsap.set(overlay, { display: 'flex' });
       gsap.killTweensOf([...bubbles, ...labels]);
-  gsap.set(bubbles, { scale: 0, transformOrigin: '50% 50%' });
+      gsap.set(bubbles, { scale: 0, transformOrigin: '50% 50%' });
       gsap.set(labels, { y: 24, autoAlpha: 0 });
 
       bubbles.forEach((bubble, i) => {
@@ -143,7 +143,7 @@ export default function BubbleMenu({
             '-=' + animationDuration * 0.9
           );
         }
-        
+
         // Add floating animation after initial scale-in
         tl.to(bubble, {
           y: gsap.utils.random(-8, -4), // Float up slightly
@@ -352,6 +352,7 @@ export default function BubbleMenu({
             'flex items-center justify-center',
             'pointer-events-none',
             'z-[1000]'
+            , 'top-[100px]'
           ].join(' ')}
           aria-hidden={!isMenuOpen}
         >
@@ -371,123 +372,122 @@ export default function BubbleMenu({
               const isCustom = item.value === 'custom' || item.label.toLowerCase().includes('custom');
               const editingThis = isCustom && isCustomEditing;
               return (
-              <li
-                key={idx}
-                role="none"
-                className={[
-                  'pill-col',
-                  'flex justify-center items-stretch',
-                  '[flex:0_0_calc(100%/3)]',
-                  'box-border'
-                ].join(' ')}
-              >
-                <button
-                  type="button"
-                  role="menuitem"
-                  onClick={() => {
-                    if (editingThis) return;
-                    const val = item.value || item.label;
-                    const el = bubblesRef.current[idx];
-                    animateSelect(el);
-                    onActivitySelect?.(val);
-                  }}
-                  aria-label={item.ariaLabel || item.label}
-                  className={[
-                    'pill-link',
-                    'w-full',
-                    'rounded-[999px]',
-                    'no-underline',
-                    'bg-white',
-                    'text-inherit',
-                    'shadow-[0_4px_14px_rgba(0,0,0,0.10)]',
-                    'flex items-center justify-center',
-                    'relative',
-                    'transition-[background,color] duration-300 ease-in-out',
-                    'box-border',
-                    'whitespace-nowrap overflow-hidden',
-                    'cursor-pointer border-0'
-                  ].join(' ')}
-                  style={{
-                    ['--item-rot']: `${item.rotation ?? 0}deg`,
-                    ['--pill-bg']: selectedActivity === (item.value || item.label) 
-                      ? (item.hoverStyles?.bgColor || 'var(--primary)') 
-                      : menuBg,
-                    ['--pill-color']: selectedActivity === (item.value || item.label)
-                      ? (item.hoverStyles?.textColor || 'var(--primary-foreground)')
-                      : menuContentColor,
-                    ['--hover-bg']: item.hoverStyles?.bgColor || 'var(--muted)',
-                    ['--hover-color']: item.hoverStyles?.textColor || menuContentColor,
-                    background: editingThis ? 'var(--card)' : 'var(--pill-bg)',
-                    color: 'var(--pill-color)',
-                    minHeight: editingThis ? '220px' : 'var(--pill-min-h, 160px)',
-                    padding: editingThis ? '1.5rem 2rem' : 'clamp(1.5rem, 3vw, 8rem) 0',
-                    fontSize: editingThis ? 'clamp(1rem, 2vw, 2rem)' : 'clamp(1.5rem, 4vw, 4rem)',
-                    fontWeight: 400,
-                    lineHeight: 0,
-                    willChange: 'transform',
-                    height: editingThis ? 'auto' : 10,
-                    borderRadius: editingThis ? '1.25rem' : '999px',
-                    display: 'flex',
-                    flexDirection: editingThis ? 'column' : 'row',
-                    gap: editingThis ? '1rem' : 0
-                  }}
-                  data-selected={selectedActivity === (item.value || item.label)}
-                  data-editing={editingThis ? 'true' : 'false'}
-                  ref={el => {
-                    if (el) bubblesRef.current[idx] = el;
-                  }}
+                <li
+                  key={idx}
+                  role="none"
+                  className={`pill-col flex justify-center items-stretch [flex:0_0_calc(100%/3)] box-border ${(editingThis) ?
+                    "absolute left-[50%] translate-x-[-50%] w-[500px] mt-4 max-sm:w-[400px] h-[240px]" : ""}`}
                 >
-                  {!editingThis && (
-                    <span
-                      className="pill-label inline-block"
-                      style={{
-                        willChange: 'transform, opacity',
-                        height: '1.2em',
-                        lineHeight: 1.2
-                      }}
-                      ref={el => {
-                        if (el) labelRefs.current[idx] = el;
-                      }}
-                    >
-                      {item.label}
-                    </span>
-                  )}
-                  {editingThis && (
-                    <div className="w-full flex flex-col gap-5 items-stretch text-left" style={{ lineHeight: 1.3 }}>
-                      <div className="flex items-center justify-between">
-                        <div className="text-xl font-semibold tracking-wide">Custom Activity</div>
-                        <button
-                          type="button"
-                          onClick={onCustomCancel}
-                          className="text-sm px-3 py-1 rounded-md bg-muted text-foreground/80 hover:bg-muted/80 transition-colors"
-                        >Back</button>
-                      </div>
-                      <div className="space-y-3">
-                        <input
-                          type="text"
-                          className="w-full px-4 py-3 rounded-md bg-background/60 border border-border focus:outline-none focus:ring-2 focus:ring-primary text-base"
-                          placeholder="e.g. Photography, Cycling ..."
-                          value={customValue}
-                          onChange={e => onCustomValueChange?.(e.target.value)}
-                          onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); onCustomSubmit?.(); } }}
-                          autoFocus
-                        />
-                        <div className="flex gap-2 justify-end pt-1">
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => {
+                      if (editingThis) return;
+                      const val = item.value || item.label;
+                      const el = bubblesRef.current[idx];
+                      animateSelect(el);
+                      onActivitySelect?.(val);
+                    }}
+                    aria-label={item.ariaLabel || item.label}
+                    className={[
+                      'pill-link',
+                      'w-full',
+                      'rounded-[999px]',
+                      'no-underline',
+                      'bg-white',
+                      'text-inherit',
+                      'shadow-[0_4px_14px_rgba(0,0,0,0.10)]',
+                      'flex items-center justify-center',
+                      'relative',
+                      'transition-[background,color] duration-300 ease-in-out',
+                      'box-border',
+                      'whitespace-nowrap overflow-hidden',
+                      'cursor-pointer border-0'
+                    ].join(' ')}
+                    style={{
+                      ['--item-rot']: `${item.rotation ?? 0}deg`,
+                      ['--pill-bg']: selectedActivity === (item.value || item.label)
+                        ? (item.hoverStyles?.bgColor || 'var(--primary)')
+                        : menuBg,
+                      ['--pill-color']: selectedActivity === (item.value || item.label)
+                        ? (item.hoverStyles?.textColor || 'var(--primary-foreground)')
+                        : menuContentColor,
+                      ['--hover-bg']: item.hoverStyles?.bgColor || 'var(--muted)',
+                      ['--hover-color']: item.hoverStyles?.textColor || menuContentColor,
+                      background: editingThis ? 'var(--card)' : 'var(--pill-bg)',
+                      color: 'var(--pill-color)',
+                      minHeight: editingThis ? '220px' : 'var(--pill-min-h, 160px)',
+                      padding: editingThis ? '1.5rem 2rem' : 'clamp(1.5rem, 3vw, 8rem) 0',
+                      fontSize: editingThis ? 'clamp(1rem, 2vw, 2rem)' : 'clamp(1.5rem, 4vw, 4rem)',
+                      fontWeight: 400,
+                      lineHeight: 0,
+                      willChange: 'transform',
+                      height: editingThis ? 'auto' : 10,
+                      borderRadius: editingThis ? '1.25rem' : '999px',
+                      display: 'flex',
+                      flexDirection: editingThis ? 'column' : 'row',
+                      gap: editingThis ? '1rem' : 0
+                    }}
+                    data-selected={selectedActivity === (item.value || item.label)}
+                    data-editing={editingThis ? 'true' : 'false'}
+                    ref={el => {
+                      if (el) bubblesRef.current[idx] = el;
+                    }}
+                  >
+                    {!editingThis && (
+                      <span
+                        className="pill-label inline-block"
+                        style={{
+                          willChange: 'transform, opacity',
+                          height: '1.2em',
+                          lineHeight: 1.2
+                        }}
+                        ref={el => {
+                          if (el) labelRefs.current[idx] = el;
+                        }}
+                      >
+                        {item.label}
+                      </span>
+                    )}
+                    {editingThis && (
+                      <div className="w-full flex flex-col gap-5 items-stretch text-left" style={{ lineHeight: 1.3 }}>
+                        <div className="flex items-center justify-between">
+                          <div className="text-xl font-semibold tracking-wide">Custom Activity</div>
                           <button
                             type="button"
-                            onClick={onCustomSubmit}
-                            disabled={!customValue.trim()}
-                            className="px-6 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed shadow hover:shadow-lg transition-shadow"
-                          >
-                            Save
-                          </button>
+                            onClick={onCustomCancel}
+                            className="text-sm px-3 py-1 rounded-md bg-muted text-foreground/80 hover:bg-muted/80 transition-colors"
+                          >Back</button>
+                        </div>
+                        <div className="space-y-3">
+                          <input
+                            type="text"
+                            className="w-full px-4 py-3 rounded-md bg-background/60 border border-border focus:outline-none focus:ring-2 focus:ring-primary text-base"
+                            placeholder="e.g. Photography, Cycling ..."
+                            value={customValue}
+                            onChange={e => onCustomValueChange?.(e.target.value)}
+                            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); onCustomSubmit?.(); } }}
+                            autoFocus
+                          />
+                          <div className="flex gap-2 justify-end pt-1">
+                            <button
+                              type="button"
+                              onClick={onCustomSubmit}
+                              disabled={!customValue.trim()}
+                              className="px-6 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed shadow hover:shadow-lg transition-shadow"
+                            >
+                              Save
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  )}
-                </button>
-              </li>
-            );})}
+                    )}
+                  </button>
+                </li>
+
+
+              );
+            })}
           </ul>
         </div>
       )}
