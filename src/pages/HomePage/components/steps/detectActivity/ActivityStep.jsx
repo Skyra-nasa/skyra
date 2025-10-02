@@ -80,40 +80,8 @@ function ActivityStep({ selectedActivity, setSelectedActivity, onNext }) {
   }, [selectedActivity, setSelectedActivity]);
 
   return (
-    <div className="w-full">
-      <div className="-mt-4 mb-4 text-center relative px-2">
-        <style>{`
-         
-          .header-gradient-text {
-            background: linear-gradient(95deg,var(--primary) 0%,var(--chart-2) 42%,var(--chart-2) 100%);
-            -webkit-background-clip: text; background-clip: text; color: transparent;
-            position: relative;
-          }
-         
-          .header-shimmer::before { /* moving sheen */
-            content:""; position:absolute; top:0; left:0; height:100%; width:42%;
-            background: linear-gradient(70deg,transparent 0%,rgba(255,255,255,.55) 45%,transparent 90%);
-            mix-blend-mode:overlay; filter:blur(4px) brightness(1.2);
-            animation: shineMove 4.8s ease-in-out infinite;
-            opacity:.65; pointer-events:none;
-          }
-          .underline-wrap .u-line-base { background:linear-gradient(90deg,var(--primary),var(--chart-2)); }
-          .underline-wrap .u-line-glow { background:linear-gradient(90deg,var(--chart-2),var(--chart-3)); filter:blur(6px); opacity:.55; }
-          @media (prefers-reduced-motion: reduce) { .header-shimmer::before { animation:none; opacity:0; } }
-        `}</style>
-        <div className="inline-block relative header-shimmer">
-          <h2
-            className="header-gradient-text mx-auto max-w-3xl text-[clamp(1.35rem,3.2vw,2.9rem)] font-semibold leading-[1.15] tracking-tight drop-shadow-sm"
-          >
-            <span className="sr-only">Step 1: </span>Choose What Suits U Better
-          </h2>
-        </div>
-        <div className="underline-wrap mt-2 flex justify-center relative">
-          <span className="u-line-glow absolute h-1 w-40 rounded-full" />
-          <span className="u-line-base relative h-[3px] w-40 rounded-full" />
-        </div>
-   
-      </div>
+    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
       <BubbleMenu
       logo={null}
       items={items}

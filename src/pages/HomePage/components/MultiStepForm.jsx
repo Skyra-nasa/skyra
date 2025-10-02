@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 
 const MultistepForm = () => {
     const [currentStep, setCurrentStep] = useState(1);
+    const [isTransitioning, setIsTransitioning] = useState(false);
+    const [transitionDirection, setTransitionDirection] = useState('forward');
     const totalSteps = 4;
     const progress = (currentStep / totalSteps) * 100;
 
@@ -21,13 +23,26 @@ const MultistepForm = () => {
 
     const handleNext = () => {
         if (currentStep < totalSteps) {
-            setCurrentStep(currentStep + 1);
+            setIsTransitioning(true);
+            setTransitionDirection('forward');
+            
+            // Add a small delay for morphing animation
+            setTimeout(() => {
+                setCurrentStep(currentStep + 1);
+                setTimeout(() => setIsTransitioning(false), 100);
+            }, 300);
         }
     };
 
     const handlePrevious = () => {
         if (currentStep > 1) {
-            setCurrentStep(currentStep - 1);
+            setIsTransitioning(true);
+            setTransitionDirection('backward');
+            
+            setTimeout(() => {
+                setCurrentStep(currentStep - 1);
+                setTimeout(() => setIsTransitioning(false), 100);
+            }, 300);
         }
     };
 
@@ -52,32 +67,40 @@ const MultistepForm = () => {
 
     return (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-20 space-y-8">
-            {currentStep === 1 ? (
-                <div className="flex justify-end">
-                    <button
-                        type="button"
-                        onClick={handleNext}
-                        className="group relative inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-primary/90 via-primary to-primary/95 hover:from-primary hover:via-primary/95 hover:to-primary text-primary-foreground px-6 py-2.5 text-sm font-semibold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/35 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/30 hover:-translate-y-0.5 active:translate-y-0 overflow-hidden"
-                    >
-                        <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
-                        <span className="relative flex items-center gap-2">
-                            Skip for now
-                            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 duration-300" />
+            <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-8">
+                        <span className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium tracking-wide">
+                            Step {currentStep}
                         </span>
-                    </button>
-                </div>
-            ) : (
-                <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                        <h2 className="text-2xl font-bold">Weather Analysis Setup</h2>
-                        <div className="text-sm text-muted-foreground">
-                            Step {currentStep} of {totalSteps}
-                        </div>
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-[1.1] tracking-tight">
+                            <span className="bg-gradient-to-b from-foreground via-foreground/80 to-foreground/60 dark:from-white dark:via-gray-100 dark:to-gray-400 bg-clip-text text-transparent">
+                                {currentStep === 1 ? "Choose What Suits You Better" : 
+                                 currentStep === 2 ? "Pick Your Location" : 
+                                 currentStep === 3 ? "Select Date & Time" : 
+                                 "Review Your Data"}
+                            </span>
+                        </h2>
                     </div>
+                    {currentStep === 1 && (
+                        <button
+                            type="button"
+                            onClick={handleNext}
+                            className="group relative inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-primary/90 via-primary to-primary/95 hover:from-primary hover:via-primary/95 hover:to-primary text-primary-foreground px-6 py-2.5 text-sm font-semibold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/35 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/30 hover:-translate-y-0.5 active:translate-y-0 overflow-hidden"
+                        >
+                            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
+                            <span className="relative flex items-center gap-2">
+                                Skip for now
+                                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 duration-300" />
+                            </span>
+                        </button>
+                    )}
+                </div>
+                {currentStep > 1 && (
                     <div className="space-y-2">
                         <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
                             <div
-                                className="h-full bg-primary rounded-full transition-all"
+                                className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full transition-all duration-700 ease-out"
                                 style={{ width: `${progress}%` }}
                             />
                         </div>
@@ -85,42 +108,57 @@ const MultistepForm = () => {
                             {stepTitles.map((title, index) => (
                                 <span
                                     key={index}
-                                    className={`${index + 1 <= currentStep ? "text-primary font-medium" : "text-muted-foreground"}`}
+                                    className={`transition-colors duration-300 ${
+                                        index + 1 <= currentStep ? "text-primary font-medium" : "text-muted-foreground"
+                                    }`}
                                 >
                                     {title}
                                 </span>
                             ))}
                         </div>
                     </div>
-                </div>
-            )}
-
-            {/* Step Content */}
-            <div className="space-y-6">
-                {currentStep === 1 && (
-                    <ActivityStep
-                        selectedActivity={selectedActivity}
-                        setSelectedActivity={setSelectedActivity}
-                        onNext={handleNext}
-                    />
-                )}
-                {currentStep === 2 && (
-                    <LocationStep
-                        selectedLocation={selectedLocation}
-                        setSelectedLocation={setSelectedLocation}
-                    />
-                )}
-                {currentStep === 3 && <DateStep date={date} setDate={setDate} />}
-                {currentStep === 4 && (
-                    <ReviewStep
-                        // selectedActivity={selectedActivity}
-                        selectedLocation={selectedLocation}
-                        date={date}
-                    />
                 )}
             </div>
 
-            {/* Navigation (hidden on step 1 except top skip) */}
+            {/* Step Content */}
+            <div className="space-y-6">
+                <div 
+                    className={`transition-all duration-300 ease-out ${
+                        currentStep === 1 
+                            ? `${isTransitioning ? 'opacity-0' : 'opacity-100'}` 
+                            : `transform ${
+                                isTransitioning 
+                                    ? transitionDirection === 'forward' 
+                                        ? ' opacity-0 ' 
+                                        : 'opacity-0'
+                                    : 'translate-x-0 opacity-100 scale-100'
+                            }`
+                    }`}
+                >
+                    {currentStep === 1 && (
+                        <ActivityStep
+                            selectedActivity={selectedActivity}
+                            setSelectedActivity={setSelectedActivity}
+                            onNext={handleNext}
+                        />
+                    )}
+                    {currentStep === 2 && (
+                        <LocationStep
+                            selectedLocation={selectedLocation}
+                            setSelectedLocation={setSelectedLocation}
+                        />
+                    )}
+                    {currentStep === 3 && <DateStep date={date} setDate={setDate} />}
+                    {currentStep === 4 && (
+                        <ReviewStep
+                            selectedActivity={selectedActivity}
+                            selectedLocation={selectedLocation}
+                            date={date}
+                        />
+                    )}
+                </div>
+            </div>
+
             {currentStep !== 1 && (
                 <div className="mt-4 flex justify-between">
                     <Button variant="outline" onClick={handlePrevious} disabled={currentStep === 1}>
