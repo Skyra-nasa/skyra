@@ -34,15 +34,15 @@ const DateStep = ({date, setDate}) => {
             </div>
 
             {/* Main Card */}
-            <Card className="overflow-hidden border-0 shadow-xl bg-gradient-to-br from-card/80 via-card to-card/90 backdrop-blur-sm">
-                <CardHeader className="bg-gradient-to-r from-primary/5 via-accent/3 to-primary/5 border-b border-border/30 pb-6">
+            <Card className="pt-0 overflow-hidden border-0 shadow-xl bg-gradient-to-br from-card/80 via-card to-card/90 backdrop-blur-sm">
+                <CardHeader className="pt-5 bg-gradient-to-r from-primary/5 via-accent/3 to-primary/5 border-b border-border/30 pb-6">
                     <CardTitle className="flex items-center gap-3 text-xl">
                         <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
                             <Calendar className="h-5 w-5 text-primary" />
                         </div>
                         <span className="bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
                             Choose Your Target Date
-                        </span>
+                        </span> 
                     </CardTitle>
                 </CardHeader>
                 
