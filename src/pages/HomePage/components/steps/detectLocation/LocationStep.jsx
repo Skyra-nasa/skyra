@@ -60,7 +60,7 @@ const LocationStep = ({ selectedLocation, setSelectedLocation }) => {
     debounce((value) => {
       searchCities(value);
     }, 500),
-    []
+    [searchCities]
   );
 
   const handleCityChange = (e) => {
@@ -251,12 +251,15 @@ const LocationStep = ({ selectedLocation, setSelectedLocation }) => {
             <InteractiveMap
               onLocationSelect={setSelectedLocation}
               selectedLocation={selectedLocation}
+              onCityUpdate={(cityName, lat, lon) => {
+                setCityName(cityName);
+                setLatitude(lat);
+                setLongitude(lon);
+              }}
             />
           </CardContent>
         </Card>
-        <p className="text-sm text-muted-foreground text-center">
-          Click anywhere on the map to select a location
-        </p>
+    
       </div>
     </div>
   );

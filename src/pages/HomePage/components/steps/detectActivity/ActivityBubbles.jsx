@@ -288,7 +288,7 @@ export default function BubbleMenu({
         }
         @media (max-width: 899px) {
           .bubble-menu-items {
-            padding-top: 120px;
+            padding-top: 40px;
             align-items: flex-start;
           }
           .bubble-menu-items .pill-list {
@@ -352,7 +352,7 @@ export default function BubbleMenu({
             'flex items-center justify-center',
             'pointer-events-none',
             'z-[1000]'
-            , 'top-[100px]'
+            , 'top-[20px]'
           ].join(' ')}
           aria-hidden={!isMenuOpen}
         >
