@@ -5,8 +5,18 @@ import LocationStep from "./steps/detectLocation/LocationStep";
 import DateStep from "./steps/detectTime/DateStep";
 import ActivityStep from "./steps/detectActivity/ActivityStep.jsx";
 import { useNavigate } from "react-router-dom";
-import Loading from "@/shared/ui/Loading/Loading";
+import { MultiStepLoaderDemo } from "@/shared/ui/Loading/Loading";
 import { WheatherContext } from "@/shared/context/WhetherProvider";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
 
 const MultistepForm = () => {
     const { selectedData, setSelectedData, currentStep, setCurrentStep } =
@@ -82,7 +92,7 @@ const MultistepForm = () => {
         }
     };
 
-    return loading ? <Loading /> : (<div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-20 space-y-8">
+    return loading ? <MultiStepLoaderDemo loading={loading} setLoading={setLoading} /> : (<div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-20 space-y-8">
         <div className="space-y-4">
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-8">
@@ -166,30 +176,54 @@ const MultistepForm = () => {
 
         {currentStep !== 1 && (
             <div className="mt-4 flex justify-between">
-                <Button variant="outline" onClick={handlePrevious} disabled={currentStep === 1}>
+                <Button variant="outline" className="cursor-pointer px-8" onClick={handlePrevious} disabled={currentStep === 1}>
                     <ChevronLeft className="h-4 w-4 mr-2" />
                     Previous
                 </Button>
-                {currentStep < totalSteps ? (
-                    <Button
-                        onClick={handleNext}
-                        size="lg"
-                        className="cursor-pointer px-8"
-                        disabled={!canProceedToNext()}
-                    >
-                        Next
-                        <ChevronRight className="h-4 w-4 ml-2" />
-                    </Button>
-                ) : (
-                    <Button
-                        disabled={!canProceedToNext()}
-                        onClick={handleAnalyze}
-                        size="lg"
-                        className="px-8 cursor-pointer"
-                    >
-                        Analyze Weather
-                    </Button>
-                )}
+                {currentStep < totalSteps ?
+                    selectedData?.sendData ?
+                        <Dialog>
+                            <DialogTrigger className="cursor-pointer rounded-md  has-[>svg]:px-4 px-8 flex items-center bg-primary text-primary-foreground hover:bg-primary/90">
+                                <span>Continue</span>
+                                <ChevronRight className="h-4 w-4 ml-2" />
+                            </DialogTrigger>
+                            <DialogContent className="flex flex-col gap-5 items-center ">
+                                <DialogHeader>
+                                    <DialogTitle className="text-[22px] my-3 text-center">What would you like to do next?</DialogTitle>
+                                    <DialogDescription className="text-[15px] mb-4 max-w-[392px] text-center">
+                                        You can either review the current step before moving forward, or start the analysis right away.
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <DialogFooter className="flex gap-10">
+                                    <DialogClose asChild>
+                                        <Button variant="outline" className="cursor-pointer" onClick={handleAnalyze}>Start Analysis</Button>
+                                    </DialogClose>
+                                    <DialogClose asChild>
+                                        <Button variant="default" className="cursor-pointer" onClick={handleNext}>Go to Next Step</Button>
+                                    </DialogClose>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
+                        :
+                        <Button
+                            onClick={handleNext}
+                            size="lg"
+                            className="cursor-pointer px-8"
+                            disabled={!canProceedToNext()}
+                        >
+                            Next
+                            <ChevronRight className="h-4 w-4 ml-2" />
+                        </Button>
+                    : (
+                        <Button
+                            disabled={!canProceedToNext()}
+                            onClick={handleAnalyze}
+                            size="lg"
+                            className="px-8 cursor-pointer"
+                        >
+                            Analyze Weather
+                        </Button>
+                    )}
             </div>
         )}
     </div>)

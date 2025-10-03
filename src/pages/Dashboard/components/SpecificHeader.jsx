@@ -1,10 +1,14 @@
 import { Button } from '@/components/ui/button'
+import { WheatherContext } from '@/shared/context/WhetherProvider';
 import { ThemeToggle } from '@/shared/ui/ThemeToggle'
 import { ArrowLeft, Download, Satellite } from 'lucide-react'
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom'
 
 function SpecificHeader() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const { setCurrentStep } = useContext(WheatherContext);
+
     return (
         <header className="border-b border-[#75757524] bg-card/50 backdrop-blur-lg sticky top-0 z-50">
             <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -13,7 +17,7 @@ function SpecificHeader() {
                         <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => { navigate("/") }}
+                            onClick={() => { navigate("/home"); setCurrentStep(1) }}
                             className="mr-2 cursor-pointer"
                         >
                             <ArrowLeft className="h-4 w-4 mr-1" />
