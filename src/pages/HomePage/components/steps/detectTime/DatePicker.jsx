@@ -36,63 +36,91 @@ export function DatePicker({ date, onDateChange, placeholder = "Choose any date 
         <Button
           variant="outline"
           className={`
-            group relative w-full h-14 px-4 py-3 text-left
-            border-2 border-border/40 hover:border-primary/40
-            bg-gradient-to-r from-background/80 to-background/60
-            backdrop-blur-sm
-            hover:shadow-lg hover:shadow-primary/5
+            group relative w-full h-16 px-5 py-4 text-left overflow-hidden
+            border-2 border-border/40 hover:border-primary/50
+            bg-gradient-to-br from-card/60 to-card/40
+            backdrop-blur-md
+            hover:shadow-xl hover:shadow-primary/10
             transition-all duration-300 ease-out
             focus:border-primary focus:ring-4 focus:ring-primary/20
-            ${date ? 'border-primary/60 bg-gradient-to-r from-primary/5 to-accent/5' : ''}
+            rounded-xl
+            ${date ? 'border-primary/60 bg-gradient-to-br from-primary/8 to-accent/8 shadow-lg shadow-primary/5' : ''}
           `}
         >
-          <div className="flex items-center justify-between w-full">
+          {/* Animated gradient background */}
+          <div className={`
+            absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 
+            opacity-0 group-hover:opacity-100 transition-opacity duration-500
+          `} />
+          
+          {/* Shimmer effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+          
+          <div className="relative z-10 flex items-center justify-between w-full">
             <div className="flex items-center gap-3">
               <div className={`
-                p-2 rounded-lg transition-all duration-300
+                p-2.5 rounded-xl transition-all duration-300 border-2
                 ${date 
-                  ? 'bg-primary/20 text-primary' 
-                  : 'bg-muted/40 text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary'
+                  ? 'bg-primary/20 text-primary border-primary/30 shadow-lg shadow-primary/20' 
+                  : 'bg-muted/40 text-muted-foreground border-border/30 group-hover:bg-primary/10 group-hover:text-primary group-hover:border-primary/30'
                 }
               `}>
                 {date ? (
-                  <CheckCircle className="h-4 w-4" />
+                  <CheckCircle className="h-5 w-5 animate-in zoom-in duration-300" />
                 ) : (
-                  <CalendarIcon className="h-4 w-4" />
+                  <CalendarIcon className="h-5 w-5" />
                 )}
               </div>
               <div className="flex flex-col gap-1">
                 <span className={`
-                  font-medium transition-colors duration-200
+                  font-semibold text-base transition-colors duration-200
                   ${date ? 'text-foreground' : 'text-muted-foreground'}
                 `}>
                   {date ? formatDisplayDate(date) : placeholder}
                 </span>
                 {date && (
-                  <span className="text-xs text-primary font-medium">
+                  <span className="text-xs text-primary font-bold uppercase tracking-wider animate-in slide-in-from-left duration-300">
                     {format(new Date(date), "EEEE")}
                   </span>
                 )}
               </div>
             </div>
-            <CalendarIcon className={`
-              h-4 w-4 transition-all duration-300
-              ${open ? 'rotate-180 text-primary' : 'text-muted-foreground'}
-              group-hover:text-primary
-            `} />
+            <div className="flex items-center gap-2">
+              {date && (
+                <div className="px-2 py-1 rounded-full bg-primary/20 border border-primary/30">
+                  <span className="text-xs font-bold text-primary">Selected</span>
+                </div>
+              )}
+              <CalendarIcon className={`
+                h-5 w-5 transition-all duration-300
+                ${open ? 'rotate-180 text-primary scale-110' : 'text-muted-foreground'}
+                group-hover:text-primary group-hover:scale-110
+              `} />
+            </div>
           </div>
         </Button>
       </PopoverTrigger>
       <PopoverContent 
-        className="p-0 w-auto bg-card/98 backdrop-blur-xl border border-border/50 shadow-2xl shadow-primary/10" 
+        className="p-0 w-auto bg-card/95 backdrop-blur-2xl border-2 border-border/40 shadow-2xl shadow-primary/20 rounded-2xl overflow-hidden" 
         align="center"
-        sideOffset={8}
+        sideOffset={12}
       >
-        <div className="p-4 border-b border-border/30 bg-gradient-to-r from-primary/5 to-accent/5">
-          <h4 className="font-semibold text-sm text-foreground">Select Date</h4>
-          <p className="text-xs text-muted-foreground mt-1">Choose any date for weather analysis</p>
+        <div className="relative p-5 border-b-2 border-border/30 bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10">
+          {/* Decorative gradient blob */}
+          <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-2xl" />
+          <div className="absolute bottom-0 left-0 w-20 h-20 bg-gradient-to-tr from-accent/20 to-transparent rounded-full blur-2xl" />
+          
+          <div className="relative z-10">
+            <div className="flex items-center gap-2 mb-1">
+              <div className="p-1.5 rounded-lg bg-primary/20 border border-primary/30">
+                <CalendarIcon className="w-3.5 h-3.5 text-primary" />
+              </div>
+              <h4 className="font-bold text-base text-foreground">Select Date</h4>
+            </div>
+            <p className="text-xs text-muted-foreground">Choose any date for weather analysis</p>
+          </div>
         </div>
-        <div className="p-3">
+        <div className="p-4 bg-gradient-to-b from-transparent to-card/50">
           <Calendar
             onChange={(selectedDate) => {
               const formattedDate = format(selectedDate, "yyyy-MM-dd");

@@ -7,7 +7,9 @@ import { Input } from '@/components/ui/input'
 function SummaryCard({ 
     riskLevel = 'low', // 'low', 'medium', 'high'
     weatherSummary = '',
-    temperature = { high: 33, low: 19, tomorrow: 31 }
+    temperature = { high: 33, low: 19, avg: 78.9 },
+    rainProb = 15,
+    windSpeed = 12
 }) {
     const [chatOpen, setChatOpen] = useState(false)
     const [messages, setMessages] = useState([
@@ -112,7 +114,7 @@ function SummaryCard({
                         </div>
                         <div>
                             <p className="text-xs text-muted-foreground">High</p>
-                            <p className="text-lg font-semibold text-foreground">{temperature.high}°C</p>
+                            <p className="text-lg font-semibold text-foreground">{temperature.high}°F</p>
                         </div>
                     </div>
 
@@ -122,7 +124,7 @@ function SummaryCard({
                         </div>
                         <div>
                             <p className="text-xs text-muted-foreground">Low</p>
-                            <p className="text-lg font-semibold text-foreground">{temperature.low}°C</p>
+                            <p className="text-lg font-semibold text-foreground">{temperature.low}°F</p>
                         </div>
                     </div>
 
@@ -132,7 +134,7 @@ function SummaryCard({
                         </div>
                         <div>
                             <p className="text-xs text-muted-foreground">Rain</p>
-                            <p className="text-lg font-semibold text-foreground">15%</p>
+                            <p className="text-lg font-semibold text-foreground">{rainProb}%</p>
                         </div>
                     </div>
 
@@ -142,7 +144,7 @@ function SummaryCard({
                         </div>
                         <div>
                             <p className="text-xs text-muted-foreground">Wind</p>
-                            <p className="text-lg font-semibold text-foreground">12 km/h</p>
+                            <p className="text-lg font-semibold text-foreground">{windSpeed} mph</p>
                         </div>
                     </div>
                 </div>
