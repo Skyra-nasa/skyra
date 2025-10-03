@@ -1,3 +1,4 @@
+import { WheatherContext } from "@/shared/context/WhetherProvider.jsx";
 import BubbleMenu from "./ActivityBubbles.jsx";
 
 
@@ -39,12 +40,12 @@ const items = [
   }
 ];
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useContext } from 'react';
 
 function ActivityStep({ selectedActivity, setSelectedActivity, onNext }) {
   const [isCustomEditing, setIsCustomEditing] = useState(false);
   const [customValue, setCustomValue] = useState('');
-
+  const { selectedData } = useContext(WheatherContext);
   const startCustomEdit = useCallback(() => {
     setIsCustomEditing(true);
     setCustomValue('');
@@ -57,9 +58,9 @@ function ActivityStep({ selectedActivity, setSelectedActivity, onNext }) {
     }
     setSelectedActivity(activity);
     // Advance to next step after selection (non custom)
-    // if (onNext) {
-    //   setTimeout(() => onNext(), 250);
-    // }
+    if (onNext && !selectedData.sendData) {
+      setTimeout(() => onNext(), 250);
+    }
   }, [onNext, setSelectedActivity, startCustomEdit]);
 
   const handleCustomSubmit = useCallback(() => {
@@ -69,9 +70,9 @@ function ActivityStep({ selectedActivity, setSelectedActivity, onNext }) {
     // log consistent with analyze logging pattern
     // (location/date not available here, logged later globally)
     console.log('selectedActivity (custom)', finalValue);
-    // if (onNext) {
-    //   setTimeout(() => onNext(), 200);
-    // }
+    if (onNext && !selectedData.sendData) {
+      setTimeout(() => onNext(), 200);
+    }
   }, [customValue, onNext, setSelectedActivity]);
 
   const handleCustomCancel = useCallback(() => {
