@@ -11,12 +11,11 @@ import { useNavigate } from 'react-router-dom'
 
 function Dashboard() {
   const navigate = useNavigate();
-  const { selectedData, setCurrentStep } = useContext(WheatherContext);
+  const { selectedData } = useContext(WheatherContext);
 
   useEffect(() => {
     if (selectedData.date === "") {
-      navigate('/home');
-      setCurrentStep(1)
+      navigate('/');
     }
 
   }, [selectedData])
