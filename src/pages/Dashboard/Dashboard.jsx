@@ -153,8 +153,7 @@ function Dashboard() {
         showExport={true}
         onExportCSV={handleExportCSV}
         onExportJSON={handleExportJSON}
-        title="Weather Analysis Results"
-        subtitle="Historical probability analysis complete"
+       
         showBackButton={true}
       />
       
