@@ -1,27 +1,48 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import LocationStep from "./steps/detectLocation/LocationStep";
 import DateStep from "./steps/detectTime/DateStep";
-import ReviewStep from "./steps/reviewData/ReviewStep";
 import ActivityStep from "./steps/detectActivity/ActivityStep.jsx";
 import { useNavigate } from "react-router-dom";
-import { sendData } from "../api/sendData";
 import Loading from "@/shared/ui/Loading/Loading";
+import { WheatherContext } from "@/shared/context/WhetherProvider";
 
 const MultistepForm = () => {
-    const [currentStep, setCurrentStep] = useState(1);
+    const { selectedData, setSelectedData, currentStep, setCurrentStep } =
+        useContext(WheatherContext);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [transitionDirection, setTransitionDirection] = useState('forward');
-    const totalSteps = 4;
+    const totalSteps = 3;
     const progress = (currentStep / totalSteps) * 100;
     const [loading, setLoading] = useState(false)
-    const stepTitles = ["Select Activity", "Select Location", "Choose Date & Time", "Review Data"];
-
+    const stepTitles = ["Select Activity", "Select Location", "Choose Date & Time"];
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [selectedLocation, setSelectedLocation] = useState(null);
-    const [date, setDate] = useState();
+    const [dateData, setDateData] = useState({
+        date: '',
+        time: ''
+    });
     const navigate = useNavigate();
+    console.log(selectedData)
+    // Send Api
+    const handleAnalyze = () => {
+        setSelectedData({
+            lat: selectedLocation?.lat || selectedData?.lat,
+            lng: selectedLocation?.lon || selectedData?.lng,
+            nameLocation: selectedLocation?.name || selectedData?.nameLocation,
+            date: dateData?.date || selectedData?.date,
+            time: dateData?.time || selectedData?.time,
+            activity: selectedActivity || selectedData?.activity,
+            sendData: true,
+        })
+        // let data={
+
+        // }
+        // postSelectedData(setLoading,data)
+        //onSuccess
+        navigate("/dashboard");
+    };
 
     const handleNext = () => {
         if (currentStep < totalSteps) {
@@ -51,25 +72,14 @@ const MultistepForm = () => {
     const canProceedToNext = () => {
         switch (currentStep) {
             case 1:
-                return !!selectedActivity;
+                return !!selectedActivity || !!selectedData.activity;
             case 2:
-                return !!selectedLocation;
+                return !!selectedLocation || !!selectedData.lat;
             case 3:
-                return !!date;
+                return !!dateData?.date || !!selectedData.date;
             default:
                 return false;
         }
-    };
-
-    // Send Api
-    const handleAnalyze = () => {
-        console.log("selectedActivity", selectedActivity, "selectedLocation", selectedLocation, "date", date);
-        // let data={
-
-        // }
-        // sendData(setLoading,data)
-        //onSuccess
-        // navigate("/dashboard");
     };
 
     return loading ? <Loading /> : (<div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-20 space-y-8">
@@ -83,8 +93,7 @@ const MultistepForm = () => {
                         <span className="bg-gradient-to-b from-foreground via-foreground/80 to-foreground/60 dark:from-white dark:via-gray-100 dark:to-gray-400 bg-clip-text text-transparent">
                             {currentStep === 1 ? "Choose What Suits You Better" :
                                 currentStep === 2 ? "Pick Your Location" :
-                                    currentStep === 3 ? "Select Date & Time" :
-                                        "Review Your Data"}
+                                    "Select Date & Time"}
                         </span>
                     </h2>
                 </div>
@@ -151,14 +160,7 @@ const MultistepForm = () => {
                         setSelectedLocation={setSelectedLocation}
                     />
                 )}
-                {currentStep === 3 && <DateStep date={date} setDate={setDate} />}
-                {currentStep === 4 && (
-                    <ReviewStep
-                        selectedActivity={selectedActivity}
-                        selectedLocation={selectedLocation}
-                        date={date}
-                    />
-                )}
+                {currentStep === 3 && <DateStep dateData={dateData} setDateData={setDateData} />}
             </div>
         </div>
 
@@ -180,6 +182,7 @@ const MultistepForm = () => {
                     </Button>
                 ) : (
                     <Button
+                        disabled={!canProceedToNext()}
                         onClick={handleAnalyze}
                         size="lg"
                         className="px-8 cursor-pointer"

@@ -1,23 +1,35 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Calendar, Clock, Sparkles, Info } from 'lucide-react';
+import { Calendar, Clock, Sparkles, Info, ClockIcon } from 'lucide-react';
 import { DatePicker } from './DatePicker';
+import { Input } from '@/components/ui/input';
+import { WheatherContext } from '@/shared/context/WhetherProvider';
 
-const DateStep = ({date, setDate}) => {
+const DateStep = ({ dateData, setDateData }) => {
+    const getCurrentTime = () => {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+        const seconds = String(now.getSeconds()).padStart(2, "0");
+        return `${hours}:${minutes}:${seconds}`;
+    };
+    const [time, setTime] = useState(getCurrentTime());
+    const { selectedData } = useContext(WheatherContext)
+
     // When user picks a date we want to mark the step as ready immediately:
     const handleDateChange = (selected) => {
-        setDate(selected);
+        setDateData({ date: selected, time });
     };
 
     const formatSelectedDate = (date) => {
         if (!date) return null;
         const selectedDate = new Date(date);
-        const options = { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
+        const options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
         };
         return selectedDate.toLocaleDateString('en-US', options);
     };
@@ -26,11 +38,11 @@ const DateStep = ({date, setDate}) => {
         <div className="w-full max-w-4xl mx-auto space-y-8">
             {/* Hero Section */}
             <div className="text-center space-y-4 mb-8">
-             
+
                 <h3 className="text-2xl sm:text-3xl font-bold bg-gradient-to-br from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
                     When would you like to peek?
                 </h3>
-               
+
             </div>
 
             {/* Main Card */}
@@ -42,10 +54,10 @@ const DateStep = ({date, setDate}) => {
                         </div>
                         <span className="bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
                             Choose Your Target Date
-                        </span> 
+                        </span>
                     </CardTitle>
                 </CardHeader>
-                
+
                 <CardContent className="p-8 space-y-8">
                     <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
                         {/* Date Picker Section */}
@@ -55,24 +67,49 @@ const DateStep = ({date, setDate}) => {
                                     <Clock className="h-4 w-4 text-primary" />
                                     Select Date for Analysis
                                 </Label>
-                                
+
                                 <DatePicker
-                                    date={date}
+                                    date={dateData?.date || selectedData?.date}
                                     onDateChange={handleDateChange}
                                     placeholder="Click to choose a date"
                                     className="text-lg"
                                 />
                             </div>
+                            {/* Selected time */}
+                            <div className="border-t p-3">
+                                <div className="flex items-center gap-3">
+                                    <Label className="text-[15px]">
+                                        Enter time
+                                    </Label>
+                                    <div className="relative grow">
+                                        <Input
+                                            type="time"
+                                            value={time || selectedData?.time}
+                                            onChange={(e) => {
+                                                setTime(e.target.value);
+                                                setDateData((prev) => ({ ...prev, time: e.target.value }));
+                                            }}
+                                            step="1"
+                                            className="peer h-11 rounded-2xl appearance-none ps-9 [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none
+                                            focus:border-primary focus:ring-4 focus-visible::ring-primary/20"
+                                        />
+                                        <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
+                                            <ClockIcon size={16} aria-hidden="true" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             {/* Selected Date Preview */}
-                            {date && (
+                            {(dateData?.date || selectedData?.date) && (
                                 <div className="p-4 rounded-xl bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/20 space-y-2">
                                     <div className="flex items-center gap-2">
                                         <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
-                                        <span className="text-sm font-medium text-primary">Selected Date</span>
+                                        <span className="text-sm font-medium text-primary">Selected Date & Time</span>
                                     </div>
-                                    <p className="text-lg font-semibold text-foreground">
-                                        {formatSelectedDate(date)}
+                                    <p className="text-lg font-semibold text-foreground flex gap-1.5">
+                                        {dateData?.date ? formatSelectedDate(dateData?.date) : formatSelectedDate(selectedData?.date)}
+                                        <span> &</span><span> {time ? time : selectedData?.time}</span>
                                     </p>
                                 </div>
                             )}
@@ -80,7 +117,7 @@ const DateStep = ({date, setDate}) => {
 
                         {/* Info Section */}
                         <div className="space-y-6">
-                         
+
 
                             {/* Quick Date Options */}
                             <div className="space-y-3">
@@ -112,10 +149,10 @@ const DateStep = ({date, setDate}) => {
             </Card>
 
             {/* Bottom Hint */}
-            {!date && (
+            {!dateData?.date && (
                 <div className="text-center">
                     <p className="text-sm text-muted-foreground bg-muted/30 rounded-full px-4 py-2 inline-block">
-                         tip: Choose any date from the past or future to see weather patterns
+                        tip: Choose any date from the past or future to see weather patterns
                     </p>
                 </div>
             )}

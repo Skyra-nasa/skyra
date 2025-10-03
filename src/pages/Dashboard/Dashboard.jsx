@@ -1,18 +1,24 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import ProbabilityCard from './components/ProbabilityCard'
 import SpecificHeader from './components/SpecificHeader'
 import { dataCards } from './mockData/dataCards'
 import BarChartDetails from './components/charts/BarChartDetails'
 import PieChartDetail from './components/charts/PieChartDetail'
 import LineChartDetails from './components/charts/LineChartDetails'
+import { WheatherContext } from '@/shared/context/WhetherProvider'
+import DataSelectedCards from './components/DataSelectedCards'
 
 function Dashboard() {
+
   return (
     <div className='mb-20'>
       <SpecificHeader />
+      <div>
+      </div>
       <div className='mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='flex gap-6 mt-10 flex-wrap justify-center mb-10' >
-          {
+          <DataSelectedCards />
+          {/* {
             dataCards.map((item, index) => {
               return (
                 <React.Fragment key={`item-${index}`}>
@@ -22,7 +28,7 @@ function Dashboard() {
               )
 
             })
-          }
+          } */}
         </div>
         <div className='flex gap-6 max-lg:flex-wrap mb-8'>
           <BarChartDetails />

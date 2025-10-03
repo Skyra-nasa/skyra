@@ -1,16 +1,16 @@
 import { Route, Routes } from "react-router-dom"
 import HomePage from "./pages/HomePage/HomePage"
 import Dashboard from "./pages/Dashboard/Dashboard"
-import BubbleMenu from "./pages/HomePage/components/steps/detectActivity/ActivityBubbles" 
+import HeroSection from "./pages/HomePage/components/HeroSection"
+
 function App() {
 
   return (
     <div>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<HeroSection />} />
+        <Route path="/home" element={<HomePage />} />
         <Route path="/dashboard" element={<Dashboard />} />
-
-
       </Routes>
     </div>
   )
