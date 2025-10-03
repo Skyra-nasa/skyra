@@ -493,7 +493,9 @@ export default function BubbleMenu({
                               type="button"
                               onClick={() => {
                                 onCustomSubmit();
-                                setShowDialog(true)
+                                if (selectedData.sendData) {
+                                  setShowDialog(true)
+                                }
                               }}
                               disabled={!customValue.trim()}
                               className="px-6 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed shadow hover:shadow-lg transition-shadow"
