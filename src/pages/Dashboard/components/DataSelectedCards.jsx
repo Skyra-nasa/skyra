@@ -81,7 +81,7 @@ function DataSelectedCards() {
                     <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Step 3</p>
                     <h2 className="font-semibold text-foreground">Target Date</h2>
                     <p className="text-sm text-muted-foreground">
-                        {(selectedData.date).toString()} • {selectedData.time}
+                        {(selectedData.date).toString()} 
                     </p>
                 </div>
             </button>
