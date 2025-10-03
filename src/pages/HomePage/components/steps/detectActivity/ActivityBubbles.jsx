@@ -1,5 +1,9 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback, useContext } from 'react';
 import { gsap } from 'gsap';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose, DialogDescription } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { WheatherContext } from '@/shared/context/WhetherProvider';
+import { useNavigate } from 'react-router-dom';
 
 const DEFAULT_ITEMS = [
   {
@@ -63,10 +67,17 @@ export default function BubbleMenu({
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
-
+  const { selectedData, setSelectedData, setCurrentStep } = useContext(WheatherContext);
+  const [showDialog, setShowDialog] = useState(false);
   const overlayRef = useRef(null);
   const bubblesRef = useRef([]);
   const labelRefs = useRef([]);
+  const navigate = useNavigate();
+  const [saveValue, setSaveValue] = useState("")
+  const handleAnalyze = () => {
+    setSelectedData((prev) => ({ ...prev, activity: saveValue }))
+    navigate("/dashboard");
+  };
 
   const menuItems = items?.length ? items : DEFAULT_ITEMS;
 
@@ -90,6 +101,7 @@ export default function BubbleMenu({
       onMenuClick?.(nextState);
       return nextState;
     });
+
   }, [onMenuClick]);
 
   // Pulse animation for selection
@@ -384,9 +396,13 @@ export default function BubbleMenu({
                     onClick={() => {
                       if (editingThis) return;
                       const val = item.value || item.label;
+                      setSaveValue(val);
                       const el = bubblesRef.current[idx];
                       animateSelect(el);
                       onActivitySelect?.(val);
+                      if (selectedData.sendData && editingThis === false && !isCustom) {
+                        setShowDialog(true)
+                      }
                     }}
                     aria-label={item.ariaLabel || item.label}
                     className={[
@@ -465,14 +481,20 @@ export default function BubbleMenu({
                             className="w-full px-4 py-3 rounded-md bg-background/60 border border-border focus:outline-none focus:ring-2 focus:ring-primary text-base"
                             placeholder="e.g. Photography, Cycling ..."
                             value={customValue}
-                            onChange={e => onCustomValueChange?.(e.target.value)}
+                            onChange={(e) => {
+                              onCustomValueChange?.(e.target.value);
+                              setSaveValue(e.target.value)
+                            }}
                             onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); onCustomSubmit?.(); } }}
                             autoFocus
                           />
                           <div className="flex gap-2 justify-end pt-1">
                             <button
                               type="button"
-                              onClick={onCustomSubmit}
+                              onClick={() => {
+                                onCustomSubmit();
+                                setShowDialog(true)
+                              }}
                               disabled={!customValue.trim()}
                               className="px-6 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed shadow hover:shadow-lg transition-shadow"
                             >
@@ -491,6 +513,40 @@ export default function BubbleMenu({
           </ul>
         </div>
       )}
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent className="flex flex-col gap-5 items-center z-[10000]">
+          <DialogHeader>
+            <DialogTitle className="text-[22px] my-3 text-center">What would you like to do next?</DialogTitle>
+            <DialogDescription className="text-[15px] mb-4 max-w-[392px] text-center">
+              You can either review the current step before moving forward, or start the analysis right away.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex gap-10">
+            <Button
+              variant="outline"
+              className="cursor-pointer"
+              onClick={() => {
+                setShowDialog(false);
+                handleAnalyze();
+              }}
+            >
+              Start Analysis
+            </Button>
+
+            <Button
+              variant="default"
+              className="cursor-pointer"
+              onClick={() => {
+                setShowDialog(false);
+                setCurrentStep(2);
+              }}
+            >
+              Go to Next Step
+            </Button>
+
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

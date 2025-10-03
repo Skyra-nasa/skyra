@@ -57,9 +57,9 @@ function ActivityStep({ selectedActivity, setSelectedActivity, onNext }) {
     }
     setSelectedActivity(activity);
     // Advance to next step after selection (non custom)
-    if (onNext) {
-      setTimeout(() => onNext(), 250);
-    }
+    // if (onNext) {
+    //   setTimeout(() => onNext(), 250);
+    // }
   }, [onNext, setSelectedActivity, startCustomEdit]);
 
   const handleCustomSubmit = useCallback(() => {
@@ -69,9 +69,9 @@ function ActivityStep({ selectedActivity, setSelectedActivity, onNext }) {
     // log consistent with analyze logging pattern
     // (location/date not available here, logged later globally)
     console.log('selectedActivity (custom)', finalValue);
-    if (onNext) {
-      setTimeout(() => onNext(), 200);
-    }
+    // if (onNext) {
+    //   setTimeout(() => onNext(), 200);
+    // }
   }, [customValue, onNext, setSelectedActivity]);
 
   const handleCustomCancel = useCallback(() => {
@@ -83,21 +83,21 @@ function ActivityStep({ selectedActivity, setSelectedActivity, onNext }) {
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
       <BubbleMenu
-      logo={null}
-      items={items}
-      onActivitySelect={handleActivitySelect}
-      selectedActivity={selectedActivity}
-      isCustomEditing={isCustomEditing}
-      customValue={customValue}
-      onCustomValueChange={setCustomValue}
-      onCustomSubmit={handleCustomSubmit}
-  onCustomCancel={handleCustomCancel}
-      useFixedPosition={false}
-      animationEase="back.out(1.5)"
-      animationDuration={0.5}
-      staggerDelay={0.12}
-      openOnLoad={true}
-    />
+        logo={null}
+        items={items}
+        onActivitySelect={handleActivitySelect}
+        selectedActivity={selectedActivity}
+        isCustomEditing={isCustomEditing}
+        customValue={customValue}
+        onCustomValueChange={setCustomValue}
+        onCustomSubmit={handleCustomSubmit}
+        onCustomCancel={handleCustomCancel}
+        useFixedPosition={false}
+        animationEase="back.out(1.5)"
+        animationDuration={0.5}
+        staggerDelay={0.12}
+        openOnLoad={true}
+      />
     </div>
   );
 }
