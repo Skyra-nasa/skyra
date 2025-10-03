@@ -1,12 +1,36 @@
-import './loading.scss';
+import { MultiStepLoader as Loader } from "@/components/ui/multi-step-loader";
 
-function Loading() {
+const loadingStates = [
+    {
+        text: "Buying a condo",
+    },
+    {
+        text: "Travelling in a flight",
+    },
+    {
+        text: "Meeting Tyler Durden",
+    },
+    {
+        text: "He makes soap",
+    },
+    {
+        text: "We goto a bar",
+    },
+    {
+        text: "Start a fight",
+    },
+    {
+        text: "We like it",
+    },
+    {
+        text: "Welcome to F**** C***",
+    },
+];
+
+export function MultiStepLoaderDemo({ loading }) {
     return (
-        <div className='flex flex-col gap-8 justify-center items-center inset-0 fixed bg-[#ffffff1c] opacity-60'>
-            <p className='textAnimate text-2xl '></p>
-            <div className='loaderAnimate'><span></span></div>
+        <div className="w-full h-[60vh] flex items-center justify-center">
+            <Loader loadingStates={loadingStates} loading={loading} duration={2000} />
         </div>
-    )
+    );
 }
-
-export default Loading
