@@ -74,9 +74,11 @@ export default function BubbleMenu({
   const labelRefs = useRef([]);
   const navigate = useNavigate();
   const [saveValue, setSaveValue] = useState("")
+  //Send Api
   const handleAnalyze = () => {
     setSelectedData((prev) => ({ ...prev, activity: saveValue }))
     navigate("/dashboard");
+
   };
 
   const menuItems = items?.length ? items : DEFAULT_ITEMS;

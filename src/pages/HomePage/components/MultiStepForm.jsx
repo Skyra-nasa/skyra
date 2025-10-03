@@ -46,6 +46,14 @@ const MultistepForm = () => {
             activity: selectedActivity || selectedData?.activity,
             sendData: true,
         })
+        setTimeout(() => {
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: "smooth"
+            });
+        }, 400);
+
         // let data={
 
         // }
