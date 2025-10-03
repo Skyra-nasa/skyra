@@ -17,6 +17,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import { postSelectedData } from "@/shared/api/postSelectedData";
 
 const MultistepForm = () => {
     const { selectedData, setSelectedData, currentStep, setCurrentStep } =
@@ -46,6 +47,15 @@ const MultistepForm = () => {
             activity: selectedActivity || selectedData?.activity,
             sendData: true,
         })
+        let data = {
+            lat: selectedLocation?.lat || selectedData?.lat,
+            lng: selectedLocation?.lon || selectedData?.lng,
+            date: dateData?.date || selectedData?.date,
+            time: dateData?.time || selectedData?.time,
+            ...(selectedActivity || selectedData?.activity) && { activity: selectedActivity || selectedData?.activity }
+        }
+        // postSelectedData(data,setLoading)
+        //on success
         setTimeout(() => {
             window.scrollTo({
                 top: 0,
@@ -53,13 +63,8 @@ const MultistepForm = () => {
                 behavior: "smooth"
             });
         }, 400);
-
-        // let data={
-
-        // }
-        // postSelectedData(setLoading,data)
-        //onSuccess
         navigate("/dashboard");
+        //
     };
 
     const handleNext = () => {
