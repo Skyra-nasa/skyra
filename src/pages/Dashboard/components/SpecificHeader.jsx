@@ -17,7 +17,7 @@ function SpecificHeader() {
                         <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => { navigate("/home"); setCurrentStep(1) }}
+                            onClick={() => { navigate("/"); setCurrentStep(1) }}
                             className="mr-2 cursor-pointer"
                         >
                             <ArrowLeft className="h-4 w-4 mr-1" />
