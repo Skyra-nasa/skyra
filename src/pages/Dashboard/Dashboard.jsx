@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import ProbabilityCard from './components/ProbabilityCard'
 import SpecificHeader from './components/SpecificHeader'
 import { dataCards } from './mockData/dataCards'
@@ -7,9 +7,19 @@ import PieChartDetail from './components/charts/PieChartDetail'
 import LineChartDetails from './components/charts/LineChartDetails'
 import { WheatherContext } from '@/shared/context/WhetherProvider'
 import DataSelectedCards from './components/DataSelectedCards'
+import { useNavigate } from 'react-router-dom'
 
 function Dashboard() {
+  const navigate = useNavigate();
+  const { selectedData, setCurrentStep } = useContext(WheatherContext);
 
+  useEffect(() => {
+    if (selectedData.date === "") {
+      navigate('/home');
+      setCurrentStep(1)
+    }
+
+  }, [selectedData])
   return (
     <div className='mb-20'>
       <SpecificHeader />
