@@ -34,15 +34,16 @@ const ProbabilityCard = ({
     const riskColor = probability >= 0.6 ? 'destructive' : probability >= 0.3 ? 'secondary' : 'muted';
 
     return (
-        <Card className="relative min-w-sm max-w-lg flex-1 backdrop-blur-xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105">
-            <div className={`absolute inset-0 bg-gradient-to-br ${colorClass} opacity-5`} />
+        <Card className="relative min-w-sm max-w-lg flex-1 bg-card/40 backdrop-blur-xl border border-border/50 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10 hover:scale-105 hover:border-primary/30 hover:-translate-y-1 group">
+            <div className={`absolute inset-0 bg-gradient-to-br ${colorClass} opacity-5 group-hover:opacity-10 transition-opacity duration-500`} />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <CardHeader className="relative pb-2">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <Icon className={`h-5 w-5 text-weather-${type}`} />
+                        <Icon className={`h-5 w-5 text-weather-${type} transition-transform duration-300 group-hover:scale-110`} />
                         <CardTitle className="text-sm font-medium">{title}</CardTitle>
                     </div>
-                    <Badge variant={riskColor} className="text-xs">
+                    <Badge variant={riskColor} className="text-xs shadow-lg">
                         {riskLevel} Risk
                     </Badge>
                 </div>

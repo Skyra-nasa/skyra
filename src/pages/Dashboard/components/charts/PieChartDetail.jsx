@@ -52,9 +52,11 @@ const chartConfig = {
 
 function PieChartDetail() {
   return (
-    <Card className="flex flex-col flex-1 max-lg:flex-auto">
+    <Card className="flex flex-col flex-1 max-lg:flex-auto bg-card/40 backdrop-blur-xl border border-border/50 shadow-xl hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:border-primary/30">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart - Donut</CardTitle>
+        <CardTitle className="bg-gradient-to-b from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
+          Pie Chart - Donut
+        </CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">

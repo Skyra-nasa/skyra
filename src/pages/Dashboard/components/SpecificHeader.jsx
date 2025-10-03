@@ -10,26 +10,28 @@ function SpecificHeader() {
     const { setCurrentStep } = useContext(WheatherContext);
 
     return (
-        <header className="border-b border-[#75757524] bg-card/50 backdrop-blur-lg sticky top-0 z-50">
+        <header className="border-b border-border/40 bg-card/30 backdrop-blur-xl sticky top-0 z-50 shadow-lg">
             <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4">
                 <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 animate-[fadeInUp_.8s_.05s_ease_forwards] opacity-0">
                         <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => { navigate("/"); setCurrentStep(1) }}
-                            className="mr-2 cursor-pointer"
+                            className="mr-2 cursor-pointer hover:bg-primary/10 transition-colors"
                         >
                             <ArrowLeft className="h-4 w-4 mr-1" />
                             Back
                         </Button>
-                        <Satellite className="h-8 w-8 text-primary" />
+                        <Satellite className="h-8 w-8 text-primary drop-shadow-lg" />
                         <div>
-                            <h1 className="text-xl font-bold">Weather Analysis Results</h1>
+                            <h1 className="text-xl font-bold bg-gradient-to-b from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
+                                Weather Analysis Results
+                            </h1>
                             <p className="text-sm text-muted-foreground">Historical probability analysis complete</p>
                         </div>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 animate-[fadeInUp_.8s_.05s_ease_forwards] opacity-0">
 
 
                         {/* Export Options */}

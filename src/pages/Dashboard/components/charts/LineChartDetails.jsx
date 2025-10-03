@@ -39,9 +39,11 @@ const chartConfig = {
 
 function LineChartDetails() {
     return (
-        <Card>
+        <Card className="bg-card/40 backdrop-blur-xl border border-border/50 shadow-xl hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:border-primary/30">
             <CardHeader>
-                <CardTitle>Line Chart - Label</CardTitle>
+                <CardTitle className="bg-gradient-to-b from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
+                    Line Chart - Label
+                </CardTitle>
                 <CardDescription>January - June 2024</CardDescription>
             </CardHeader>
             <CardContent>

@@ -35,9 +35,11 @@ const chartConfig = {
 
 function BarChartDetails() {
   return (
-    <Card className="flex-1 max-lg:flex-auto">
+    <Card className="flex-1 max-lg:flex-auto bg-card/40 backdrop-blur-xl border border-border/50 shadow-xl hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:border-primary/30">
       <CardHeader>
-        <CardTitle>Bar Chart - Label</CardTitle>
+        <CardTitle className="bg-gradient-to-b from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
+          Bar Chart - Label
+        </CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
