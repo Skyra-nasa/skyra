@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useContext } from "react";
 import debounce from "lodash.debounce";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { MapPin, Loader2, Search } from "lucide-react";
 import InteractiveMap from "./IntercativeMap";
+import { WheatherContext } from "@/shared/context/WhetherProvider";
 
 const LocationStep = ({ selectedLocation, setSelectedLocation }) => {
   const [cityName, setCityName] = useState("");
@@ -14,6 +15,7 @@ const LocationStep = ({ selectedLocation, setSelectedLocation }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const { selectedData } = useContext(WheatherContext)
 
   const searchContainerRef = useRef(null);
 
@@ -146,7 +148,7 @@ const LocationStep = ({ selectedLocation, setSelectedLocation }) => {
                 <Input
                   id="city"
                   placeholder="Type a city name..."
-                  value={cityName}
+                  value={cityName || selectedData?.nameLocation}
                   onChange={handleCityChange}
                   onFocus={() => setShowSuggestions(searchResults.length > 0)}
                   className="pr-10 h-11"
@@ -206,7 +208,7 @@ const LocationStep = ({ selectedLocation, setSelectedLocation }) => {
               <div className="grid grid-cols-3 gap-2">
                 <Input
                   placeholder="Latitude"
-                  value={latitude}
+                  value={latitude || selectedData?.lat}
                   onChange={(e) => setLatitude(e.target.value)}
                   type="number"
                   step="any"
@@ -219,7 +221,7 @@ const LocationStep = ({ selectedLocation, setSelectedLocation }) => {
                 />
                 <Input
                   placeholder="Longitude"
-                  value={longitude}
+                  value={longitude || selectedData?.lng}
                   onChange={(e) => setLongitude(e.target.value)}
                   type="number"
                   step="any"
@@ -259,7 +261,7 @@ const LocationStep = ({ selectedLocation, setSelectedLocation }) => {
             />
           </CardContent>
         </Card>
-    
+
       </div>
     </div>
   );

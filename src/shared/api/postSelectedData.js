@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const sendData = async ({setLoading,data}) => {
+export const postSelectedData = async ({setLoading,data}) => {
   setLoading(false);
   let url = "";
   try {
