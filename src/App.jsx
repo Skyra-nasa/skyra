@@ -6,16 +6,7 @@ import { useContext, useEffect } from "react"
 import { WheatherContext } from "./shared/context/WhetherProvider"
 
 function App() {
-  const navigate = useNavigate();
-  const { selectedData, setCurrentStep } = useContext(WheatherContext);
 
-  useEffect(() => {
-    if (selectedData.date === "") {
-      navigate('/home');
-      setCurrentStep(1)
-    }
-
-  }, [selectedData])
 
   return (
     <div>
