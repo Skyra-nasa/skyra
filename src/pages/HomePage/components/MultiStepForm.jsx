@@ -17,6 +17,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import { postSelectedData } from "@/shared/api/postSelectedData";
 
 const MultistepForm = () => {
     const { selectedData, setSelectedData, currentStep, setCurrentStep } =
@@ -26,12 +27,11 @@ const MultistepForm = () => {
     const totalSteps = 3;
     const progress = (currentStep / totalSteps) * 100;
     const [loading, setLoading] = useState(false)
-    const stepTitles = ["Select Activity", "Select Location", "Choose Date & Time"];
+    const stepTitles = ["Select Activity", "Select Location", "Choose Date"];
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [selectedLocation, setSelectedLocation] = useState(null);
     const [dateData, setDateData] = useState({
         date: '',
-        time: ''
     });
     const navigate = useNavigate();
     console.log(selectedData)
@@ -42,10 +42,17 @@ const MultistepForm = () => {
             lng: selectedLocation?.lon || selectedData?.lng,
             nameLocation: selectedLocation?.name || selectedData?.nameLocation,
             date: dateData?.date || selectedData?.date,
-            time: dateData?.time || selectedData?.time,
             activity: selectedActivity || selectedData?.activity,
             sendData: true,
         })
+        let data = {
+            lat: selectedLocation?.lat || selectedData?.lat,
+            lng: selectedLocation?.lon || selectedData?.lng,
+            date: dateData?.date || selectedData?.date,
+            ...(selectedActivity || selectedData?.activity) && { activity: selectedActivity || selectedData?.activity }
+        }
+        // postSelectedData(data,setLoading)
+        //on success
         setTimeout(() => {
             window.scrollTo({
                 top: 0,
@@ -53,13 +60,8 @@ const MultistepForm = () => {
                 behavior: "smooth"
             });
         }, 400);
-
-        // let data={
-
-        // }
-        // postSelectedData(setLoading,data)
-        //onSuccess
         navigate("/dashboard");
+        //
     };
 
     const handleNext = () => {
@@ -111,7 +113,7 @@ const MultistepForm = () => {
                         <span className="bg-gradient-to-b from-foreground via-foreground/80 to-foreground/60 dark:from-white dark:via-gray-100 dark:to-gray-400 bg-clip-text text-transparent">
                             {currentStep === 1 ? "Choose What Suits You Better" :
                                 currentStep === 2 ? "Pick Your Location" :
-                                    "Select Date & Time"}
+                                    "Select Date"}
                         </span>
                     </h2>
                 </div>

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Calendar, Clock, Sparkles, Info } from 'lucide-react';
+import { Calendar, Clock } from 'lucide-react';
 import { DatePicker } from './DatePicker';
 import { WheatherContext } from '@/shared/context/WhetherProvider';
 
@@ -10,7 +10,7 @@ const DateStep = ({ dateData, setDateData }) => {
 
     // When user picks a date we want to mark the step as ready immediately:
     const handleDateChange = (selected) => {
-        setDateData({ date: selected, time: '12:00:00' });
+        setDateData({ date: selected });
     };
 
     const formatSelectedDate = (date) => {

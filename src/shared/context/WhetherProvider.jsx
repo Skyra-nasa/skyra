@@ -10,7 +10,6 @@ export const WheatherProvider = ({ children }) => {
         lng: 0,
         nameLocation: "",
         date: "",
-        time: "",
         activity: "",
         sendData: false,
     });
