@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import BubbleMenu from "./steps/detectActivity/ActivityBubbles";
 import { useNavigate } from "react-router-dom";
+import HomeBackground from "../../../components/homebackground";
 
 const heroItems = [
   {
@@ -45,11 +46,9 @@ function HeroSection() {
 
   return (
     <section className="relative flex items-start justify-center w-full overflow-hidden pt-20 pb-12 sm:pb-20 min-h-[100vh]">
+      {/* Galaxy Background */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-background" />
-        <div className="absolute -top-1/4 left-1/2 -translate-x-1/2 w-[140vw] h-[140vw] rounded-full bg-radial-at-center opacity-[0.35]" style={{ background: 'radial-gradient(circle at center, var(--primary)/35 0%, transparent 60%)' }} />
-        <div className="absolute inset-0 opacity-20 mix-blend-overlay" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0)', backgroundSize: '26px 26px' }} />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent,rgba(255,255,255,0.04),transparent)]" />
+        <HomeBackground />
       </div>
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
