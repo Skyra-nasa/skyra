@@ -1,29 +1,24 @@
 import { MultiStepLoader as Loader } from "@/components/ui/multi-step-loader";
+import "./loading.scss";
 
 const loadingStates = [
     {
-        text: "Buying a condo",
+        text: "Connecting to weather service...",
     },
     {
-        text: "Travelling in a flight",
+        text: "Fetching climate data...",
     },
     {
-        text: "Meeting Tyler Durden",
+        text: "Analyzing temperature patterns...",
     },
     {
-        text: "He makes soap",
+        text: "Processing humidity and wind speed...",
     },
     {
-        text: "We goto a bar",
+        text: "Predicting possible rainfall...",
     },
     {
-        text: "Start a fight",
-    },
-    {
-        text: "We like it",
-    },
-    {
-        text: "Welcome to F**** C***",
+        text: "Finalizing your weather report 🌍",
     },
 ];
 

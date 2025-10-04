@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogC
 import { Button } from "@/components/ui/button";
 import { WheatherContext } from '@/shared/context/WhetherProvider';
 import { useNavigate } from 'react-router-dom';
+import { postSelectedData } from '@/shared/api/postSelectedData';
 
 const DEFAULT_ITEMS = [
   {
@@ -63,11 +64,12 @@ export default function BubbleMenu({
   customValue,
   onCustomValueChange,
   onCustomSubmit,
-  onCustomCancel
+  onCustomCancel,
+  setLoading
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
-  const { selectedData, setSelectedData, setCurrentStep } = useContext(WheatherContext);
+  const { selectedData, setSelectedData, setCurrentStep, setWeatherData } = useContext(WheatherContext);
   const [showDialog, setShowDialog] = useState(false);
   const overlayRef = useRef(null);
   const bubblesRef = useRef([]);
@@ -75,9 +77,18 @@ export default function BubbleMenu({
   const navigate = useNavigate();
   const [saveValue, setSaveValue] = useState("")
   //Send Api
-  const handleAnalyze = () => {
+  const handleAnalyze = async () => {
     setSelectedData((prev) => ({ ...prev, activity: saveValue }))
-    navigate("/dashboard");
+    let data = {
+      latitude: selectedData?.lat,
+      longitude: selectedData?.lng,
+      future_date: selectedData?.date,
+      activity: saveValue
+    }
+    let result = await postSelectedData(data, setWeatherData, setLoading);
+    if (result?.status === 200) {
+      navigate("/dashboard");
+    }
 
   };
 
