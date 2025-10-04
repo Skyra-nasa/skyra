@@ -1,9 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
 import { Button } from '@/components/ui/button'
 import { MessageCircle, Send, Sparkles, Thermometer, CloudRain, Wind, Sun, Cloud } from 'lucide-react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import axios from 'axios'
+import { WheatherContext } from '@/shared/context/WhetherProvider'
 
 function SummaryCard({
     riskLevel = 'low', // 'low', 'medium', 'high'
@@ -20,7 +21,7 @@ function SummaryCard({
     const [isLoading, setIsLoading] = useState(false)
     const messagesEndRef = useRef(null)
     const inputRef = useRef(null)
-
+    const { selectedData, weatherData } = useContext(WheatherContext);
     const getRiskConfig = () => {
         switch (riskLevel) {
             case 'high':
@@ -68,12 +69,16 @@ function SummaryCard({
         // Add user message
         setMessages(prev => [...prev, { role: "user", text: userMessage }]);
         setIsLoading(true);
-        try {
-            const response = await axios.post(`https://nasa.almiraj.xyz/chat`, {
-                user_message: userMessage
-            });
-            const botReply = response.data.bot_reply || "Sorry, I couldn’t understand that.";
+        try {//https://nasa.almiraj.xyz
+            let data = {
+                user_message: userMessage,
+                activity: selectedData?.activity || "",
+                weather_values: { ...weatherData }
 
+            }
+            const response = await axios.post(`https://nasa.almiraj.xyz/chat`, data);
+            const botReply = response.data.bot_reply || "Sorry, I couldn’t understand that.";
+            console.log("data", data)
             // Add assistant reply
             setMessages(prev => [...prev, { role: "assistant", text: botReply }]);
 
