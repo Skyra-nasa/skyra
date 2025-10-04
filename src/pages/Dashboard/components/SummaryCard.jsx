@@ -68,12 +68,10 @@ function SummaryCard({
         // Add user message
         setMessages(prev => [...prev, { role: "user", text: userMessage }]);
         setIsLoading(true);
-
         try {
-            const response = await axios.post("/api/chat", {
+            const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/chat`, {
                 user_message: userMessage
             });
-
             const botReply = response.data.bot_reply || "Sorry, I couldn’t understand that.";
 
             // Add assistant reply
