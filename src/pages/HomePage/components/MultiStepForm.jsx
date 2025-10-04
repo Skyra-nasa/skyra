@@ -20,7 +20,7 @@ import {
 import { postSelectedData } from "@/shared/api/postSelectedData";
 
 const MultistepForm = () => {
-    const { selectedData, setSelectedData, currentStep, setCurrentStep } =
+    const { selectedData, setSelectedData, currentStep, setCurrentStep, setWeatherData } =
         useContext(WheatherContext);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [transitionDirection, setTransitionDirection] = useState('forward');
@@ -36,7 +36,7 @@ const MultistepForm = () => {
     const navigate = useNavigate();
     console.log(selectedData)
     // Send Api
-    const handleAnalyze = () => {
+    const handleAnalyze = async () => {
         setSelectedData({
             lat: selectedLocation?.lat || selectedData?.lat,
             lng: selectedLocation?.lon || selectedData?.lng,
@@ -46,22 +46,22 @@ const MultistepForm = () => {
             sendData: true,
         })
         let data = {
-            lat: selectedLocation?.lat || selectedData?.lat,
-            lng: selectedLocation?.lon || selectedData?.lng,
-            date: dateData?.date || selectedData?.date,
-            ...(selectedActivity || selectedData?.activity) && { activity: selectedActivity || selectedData?.activity }
+            latitude: selectedLocation?.lat || selectedData?.lat,
+            longitude: selectedLocation?.lon || selectedData?.lng,
+            future_date: dateData?.date || selectedData?.date,
+            activity: selectedActivity || selectedData?.activity
         }
-        // postSelectedData(data,setLoading)
-        //on success
-        setTimeout(() => {
-            window.scrollTo({
-                top: 0,
-                left: 0,
-                behavior: "smooth"
-            });
-        }, 400);
-        navigate("/dashboard");
-        //
+        let result = await postSelectedData(data, setWeatherData, setLoading);
+        if (result?.status === 200) {
+            setTimeout(() => {
+                window.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: "smooth"
+                });
+            }, 400);
+            navigate("/dashboard");
+        }
     };
 
     const handleNext = () => {
@@ -172,6 +172,7 @@ const MultistepForm = () => {
                         selectedActivity={selectedActivity}
                         setSelectedActivity={setSelectedActivity}
                         onNext={handleNext}
+                        onLoading={setLoading}
                     />
                 )}
                 {currentStep === 2 && (

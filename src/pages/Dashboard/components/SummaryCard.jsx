@@ -114,7 +114,7 @@ function SummaryCard({
                         </div>
                         <div>
                             <p className="text-xs text-muted-foreground">High</p>
-                            <p className="text-lg font-semibold text-foreground">{temperature.high}°F</p>
+                            <p className="text-lg font-semibold text-foreground">{temperature.high}°C</p>
                         </div>
                     </div>
 
@@ -124,7 +124,7 @@ function SummaryCard({
                         </div>
                         <div>
                             <p className="text-xs text-muted-foreground">Low</p>
-                            <p className="text-lg font-semibold text-foreground">{temperature.low}°F</p>
+                            <p className="text-lg font-semibold text-foreground">{temperature.low}°C</p>
                         </div>
                     </div>
 
