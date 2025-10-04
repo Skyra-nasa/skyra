@@ -29,17 +29,17 @@ function BarChartDetails({ weatherData }) {
   const chartData = weatherData?.statistics ? [
     { 
       metric: "Min", 
-      temperature: Number(weatherData.statistics.temperature?.min_fahrenheit?.toFixed(1)) || 0,
+      temperature: Number(weatherData.statistics.temperature?.min_celsius?.toFixed(1)) || 0,
       label: "Low"
     },
     { 
       metric: "Avg", 
-      temperature: Number(weatherData.statistics.temperature?.avg_fahrenheit?.toFixed(1)) || 0,
+      temperature: Number(weatherData.statistics.temperature?.avg_celsius?.toFixed(1)) || 0,
       label: "Average"
     },
     { 
       metric: "Max", 
-      temperature: Number(weatherData.statistics.temperature?.max_fahrenheit?.toFixed(1)) || 0,
+      temperature: Number(weatherData.statistics.temperature?.max_celsius?.toFixed(1)) || 0,
       label: "High"
     },
   ] : [
@@ -49,7 +49,7 @@ function BarChartDetails({ weatherData }) {
   ]
 
   const tempRange = weatherData?.statistics?.temperature 
-    ? (weatherData.statistics.temperature.max_fahrenheit - weatherData.statistics.temperature.min_fahrenheit).toFixed(1)
+    ? (weatherData.statistics.temperature.max_celsius - weatherData.statistics.temperature.min_celsius).toFixed(1)
     : 0
   return (
     <Card className="flex-1 max-lg:flex-auto bg-card/40 backdrop-blur-xl border-2 border-border/50 shadow-xl hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:border-primary/30">
@@ -62,7 +62,7 @@ function BarChartDetails({ weatherData }) {
             Temperature Analysis
           </CardTitle>
         </div>
-        <CardDescription>Historical temperature range (°F)</CardDescription>
+        <CardDescription>Historical temperature range (°C)</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer config={chartConfig}>
@@ -85,7 +85,7 @@ function BarChartDetails({ weatherData }) {
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => `${value}°F`}
+              tickFormatter={(value) => `${value}°C`}
             />
             <ChartTooltip
               cursor={false}
@@ -94,7 +94,7 @@ function BarChartDetails({ weatherData }) {
                   const item = payload?.[0]?.payload
                   return item?.label || value
                 }}
-                formatter={(value) => [`${value}°F`, "Temperature"]}
+                formatter={(value) => [`${value}°C`, "Temperature"]}
               />}
             />
             <Bar 
@@ -107,7 +107,7 @@ function BarChartDetails({ weatherData }) {
                 offset={12}
                 className="fill-foreground"
                 fontSize={12}
-                formatter={(value) => `${value}°F`}
+                formatter={(value) => `${value}°C`}
               />
             </Bar>
           </BarChart>
@@ -116,7 +116,7 @@ function BarChartDetails({ weatherData }) {
       <CardFooter className="flex-col items-start gap-2 text-sm pt-4">
         <div className="flex gap-2 leading-none font-medium items-center">
           <Thermometer className="h-4 w-4 text-red-500" />
-          Temperature Range: {tempRange}°F
+          Temperature Range: {tempRange}°C
         </div>
         <div className="text-muted-foreground leading-none">
           Based on {weatherData?.statistics?.sample_size || 10} years of historical data

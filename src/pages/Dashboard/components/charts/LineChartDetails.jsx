@@ -33,40 +33,40 @@ const chartConfig = {
 }
 
 function LineChartDetails({ weatherData }) {
-  // Generate trend data simulating variation around the averages
-  const stats = weatherData?.statistics
-  const chartData = stats ? [
-    { 
-      day: "Day 1", 
-      wind: Math.max(0, (stats.wind?.avg_mph || 0) - 2),
-      rain: Math.max(0, (stats.rain?.rainy_day_prob || 0) - 5),
-      pressure: (stats.pressure?.min_mb || 0)
-    },
-    { 
-      day: "Day 2", 
-      wind: Math.max(0, (stats.wind?.avg_mph || 0) - 1),
-      rain: Math.max(0, (stats.rain?.rainy_day_prob || 0) - 3),
-      pressure: (stats.pressure?.avg_mb || 0) - 3
-    },
-    { 
-      day: "Day 3", 
-      wind: Math.abs(stats.wind?.avg_mph || 0),
-      rain: (stats.rain?.rainy_day_prob || 0),
-      pressure: (stats.pressure?.avg_mb || 0)
-    },
-    { 
-      day: "Day 4", 
-      wind: Math.max(0, (stats.wind?.avg_mph || 0) + 1),
-      rain: Math.min(100, (stats.rain?.rainy_day_prob || 0) + 3),
-      pressure: (stats.pressure?.avg_mb || 0) + 2
-    },
-    { 
-      day: "Day 5", 
-      wind: (stats.wind?.max_mph || 0),
-      rain: Math.min(100, (stats.rain?.rainy_day_prob || 0) + 5),
-      pressure: (stats.pressure?.max_mb || 0)
-    },
-  ] : []
+    // Generate trend data simulating variation around the averages
+    const stats = weatherData?.statistics
+    const chartData = stats ? [
+        {
+            day: "Day 1",
+            wind: Math.max(0, (stats.wind?.avg_mph || 0) - 2),
+            rain: Math.max(0, (stats.rain?.rainy_day_prob || 0) - 5),
+            pressure: (stats.pressure?.min_mb || 0)
+        },
+        {
+            day: "Day 2",
+            wind: Math.max(0, (stats.wind?.avg_mph || 0) - 1),
+            rain: Math.max(0, (stats.rain?.rainy_day_prob || 0) - 3),
+            pressure: (stats.pressure?.avg_mb || 0) - 3
+        },
+        {
+            day: "Day 3",
+            wind: Math.abs(stats.wind?.avg_mph || 0),
+            rain: (stats.rain?.rainy_day_prob || 0),
+            pressure: (stats.pressure?.avg_mb || 0)
+        },
+        {
+            day: "Day 4",
+            wind: Math.max(0, (stats.wind?.avg_mph || 0) + 1),
+            rain: Math.min(100, (stats.rain?.rainy_day_prob || 0) + 3),
+            pressure: (stats.pressure?.avg_mb || 0) + 2
+        },
+        {
+            day: "Day 5",
+            wind: (stats.wind?.max_mph || 0),
+            rain: Math.min(100, (stats.rain?.rainy_day_prob || 0) + 5),
+            pressure: (stats.pressure?.max_mb || 0)
+        },
+    ] : []
     return (
         <Card className="bg-card/40 backdrop-blur-xl border-2 border-border/50 shadow-xl hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:border-primary/30">
             <CardHeader>
@@ -115,7 +115,7 @@ function LineChartDetails({ weatherData }) {
                             label={{ value: 'Pressure (mb)', angle: 90, position: 'insideRight', style: { textAnchor: 'middle' } }}
                         />
                         <ChartTooltip
-                            content={<ChartTooltipContent 
+                            content={<ChartTooltipContent
                                 formatter={(value, name) => {
                                     if (name === 'wind') return [`${value.toFixed(1)} mph`, 'Wind Speed']
                                     if (name === 'rain') return [`${value.toFixed(0)}%`, 'Rain Probability']
@@ -124,8 +124,8 @@ function LineChartDetails({ weatherData }) {
                                 }}
                             />}
                         />
-                        <Legend 
-                            verticalAlign="top" 
+                        <Legend
+                            verticalAlign="top"
                             height={36}
                             iconType="line"
                         />

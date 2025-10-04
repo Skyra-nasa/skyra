@@ -4,22 +4,29 @@ import { ThemeToggle } from '../ui/ThemeToggle'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 
-function Header({ 
-  showExport = false, 
-  onExportCSV, 
-  onExportJSON, 
-
-  showBackButton = false 
+function Header({
+  showExport = false,
+  onExportCSV,
+  onExportJSON,
+  title = "Skyra",
+  subtitle = null,
+  showBackButton = false
 }) {
   const navigate = useNavigate()
-  
+
+  const handleLogoClick = () => {
+    if (!showBackButton) {
+      navigate("/")
+    }
+  }
+
   return (
     <header className="border-b backdrop-blur-lg border-[#75757524] sticky top-0 z-50 bg-background/80">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center justify-between">
-          <div 
-            className="flex items-center gap-3 cursor-pointer" 
-            onClick={() => navigate("/")}
+          <div
+            className={`flex items-center gap-3 animate-[fadeInUp_.8s_.05s_ease_forwards] opacity-0 ${!showBackButton ? 'cursor-pointer' : ''}`}
+            onClick={handleLogoClick}
           >
             <Satellite className="h-8 w-8 text-primary" />
             <div>

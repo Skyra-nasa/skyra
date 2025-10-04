@@ -41,21 +41,21 @@ function WeatherStatsCards({ statistics }) {
             iconBg: 'bg-red-500/20',
             gradient: 'from-red-500/20 via-orange-500/10 to-red-500/20',
             metrics: [
-                { 
-                    label: 'Average', 
-                    value: `${statistics.temperature?.avg_fahrenheit?.toFixed(1)}°F`,
+                {
+                    label: 'Average',
+                    // value: `${(((statistics.temperature?.avg_celsius) * 1.8) + 32)?.toFixed(1)}°F`,
                     subValue: `${statistics.temperature?.avg_celsius?.toFixed(1)}°C`,
                     icon: Activity,
                     type: 'value'
                 },
-                { 
-                    label: 'Temperature Range', 
-                    value: `${statistics.temperature?.min_fahrenheit?.toFixed(1)}°F - ${statistics.temperature?.max_fahrenheit?.toFixed(1)}°F`,
+                {
+                    label: 'Temperature Range',
+                    value: `${statistics.temperature?.min_celsius?.toFixed(1)}°C - ${statistics.temperature?.max_celsius?.toFixed(1)}°C`,
                     icon: TrendingUp,
                     type: 'range'
                 },
-                { 
-                    label: 'Very Hot Days', 
+                {
+                    label: 'Very Hot Days',
                     value: statistics.temperature?.very_hot_prob,
                     displayValue: `${statistics.temperature?.very_hot_prob}%`,
                     warning: statistics.temperature?.very_hot_prob > 0,
@@ -63,8 +63,8 @@ function WeatherStatsCards({ statistics }) {
                     type: 'progress',
                     inverse: true
                 },
-                { 
-                    label: 'Very Cold Days', 
+                {
+                    label: 'Very Cold Days',
                     value: statistics.temperature?.very_cold_prob,
                     displayValue: `${statistics.temperature?.very_cold_prob}%`,
                     warning: statistics.temperature?.very_cold_prob > 0,
@@ -81,21 +81,21 @@ function WeatherStatsCards({ statistics }) {
             iconBg: 'bg-cyan-500/20',
             gradient: 'from-cyan-500/20 via-blue-500/10 to-cyan-500/20',
             metrics: [
-                { 
-                    label: 'Average Rainfall', 
+                {
+                    label: 'Average Rainfall',
                     value: `${statistics.rain?.avg_mm?.toFixed(2)} mm`,
-                    subValue: `${statistics.rain?.avg_inches?.toFixed(2)} inches`,
+                    // subValue: `${statistics.rain?.avg_inches?.toFixed(2)} inches`,
                     icon: CloudRain,
                     type: 'value'
                 },
-                { 
-                    label: 'Maximum Rainfall', 
+                {
+                    label: 'Maximum Rainfall',
                     value: `${statistics.rain?.max_mm?.toFixed(2)} mm`,
                     icon: TrendingUp,
                     type: 'value'
                 },
-                { 
-                    label: 'Rain Probability', 
+                {
+                    label: 'Rain Probability',
                     value: statistics.rain?.rainy_day_prob,
                     displayValue: `${statistics.rain?.rainy_day_prob}%`,
                     warning: statistics.rain?.rainy_day_prob > 50,
@@ -103,8 +103,8 @@ function WeatherStatsCards({ statistics }) {
                     type: 'progress',
                     inverse: true
                 },
-                { 
-                    label: 'Heavy Rain Risk', 
+                {
+                    label: 'Heavy Rain Risk',
                     value: statistics.rain?.heavy_rain_prob,
                     displayValue: `${statistics.rain?.heavy_rain_prob}%`,
                     warning: statistics.rain?.heavy_rain_prob > 0,
@@ -121,20 +121,20 @@ function WeatherStatsCards({ statistics }) {
             iconBg: 'bg-blue-500/20',
             gradient: 'from-blue-500/20 via-cyan-500/10 to-blue-500/20',
             metrics: [
-                { 
-                    label: 'Average Humidity', 
+                {
+                    label: 'Average Humidity',
                     value: `${statistics.specific_humidity?.avg_g_kg?.toFixed(2)} g/kg`,
                     icon: Droplets,
                     type: 'value'
                 },
-                { 
-                    label: 'Humidity Range', 
+                {
+                    label: 'Humidity Range',
                     value: `${statistics.specific_humidity?.min_g_kg?.toFixed(2)} - ${statistics.specific_humidity?.max_g_kg?.toFixed(2)} g/kg`,
                     icon: TrendingUp,
                     type: 'range'
                 },
-                { 
-                    label: 'High Humidity Days', 
+                {
+                    label: 'High Humidity Days',
                     value: statistics.specific_humidity?.high_humidity_prob,
                     displayValue: `${statistics.specific_humidity?.high_humidity_prob}%`,
                     warning: statistics.specific_humidity?.high_humidity_prob > 50,
@@ -142,8 +142,8 @@ function WeatherStatsCards({ statistics }) {
                     type: 'progress',
                     inverse: true
                 },
-                { 
-                    label: 'Comfort Status', 
+                {
+                    label: 'Comfort Status',
                     value: statistics.specific_humidity?.high_humidity_prob < 30 ? 'Comfortable' : 'Humid',
                     icon: statistics.specific_humidity?.high_humidity_prob < 30 ? CheckCircle : AlertTriangle,
                     statusColor: statistics.specific_humidity?.high_humidity_prob < 30 ? 'text-green-500' : 'text-yellow-500',
@@ -158,20 +158,20 @@ function WeatherStatsCards({ statistics }) {
             iconBg: 'bg-green-500/20',
             gradient: 'from-green-500/20 via-emerald-500/10 to-green-500/20',
             metrics: [
-                { 
-                    label: 'Average Wind', 
+                {
+                    label: 'Average Wind',
                     value: `${Math.abs(statistics.wind?.avg_mph || 0).toFixed(1)} mph`,
                     icon: Wind,
                     type: 'value'
                 },
-                { 
-                    label: 'Maximum Wind', 
+                {
+                    label: 'Maximum Wind',
                     value: `${statistics.wind?.max_mph?.toFixed(1)} mph`,
                     icon: TrendingUp,
                     type: 'value'
                 },
-                { 
-                    label: 'Very Windy Days', 
+                {
+                    label: 'Very Windy Days',
                     value: statistics.wind?.very_windy_prob,
                     displayValue: `${statistics.wind?.very_windy_prob}%`,
                     warning: statistics.wind?.very_windy_prob > 50,
@@ -179,8 +179,8 @@ function WeatherStatsCards({ statistics }) {
                     type: 'progress',
                     inverse: true
                 },
-                { 
-                    label: 'Extreme Wind Risk', 
+                {
+                    label: 'Extreme Wind Risk',
                     value: statistics.wind?.extreme_wind_prob,
                     displayValue: `${statistics.wind?.extreme_wind_prob}%`,
                     warning: statistics.wind?.extreme_wind_prob > 0,
@@ -197,20 +197,20 @@ function WeatherStatsCards({ statistics }) {
             iconBg: 'bg-purple-500/20',
             gradient: 'from-purple-500/20 via-violet-500/10 to-purple-500/20',
             metrics: [
-                { 
-                    label: 'Average Pressure', 
+                {
+                    label: 'Average Pressure',
                     value: `${statistics.pressure?.avg_mb?.toFixed(1)} mb`,
                     icon: Gauge,
                     type: 'value'
                 },
-                { 
-                    label: 'Pressure Range', 
+                {
+                    label: 'Pressure Range',
                     value: `${statistics.pressure?.min_mb?.toFixed(1)} - ${statistics.pressure?.max_mb?.toFixed(1)} mb`,
                     icon: TrendingUp,
                     type: 'range'
                 },
-                { 
-                    label: 'Low Pressure Days', 
+                {
+                    label: 'Low Pressure Days',
                     value: statistics.pressure?.low_pressure_prob,
                     displayValue: `${statistics.pressure?.low_pressure_prob}%`,
                     warning: statistics.pressure?.low_pressure_prob > 50,
@@ -218,8 +218,8 @@ function WeatherStatsCards({ statistics }) {
                     type: 'progress',
                     inverse: true
                 },
-                { 
-                    label: 'Pressure Status', 
+                {
+                    label: 'Pressure Status',
                     value: statistics.pressure?.avg_mb > 1013 ? 'High Pressure' : 'Low Pressure',
                     icon: statistics.pressure?.avg_mb > 1013 ? TrendingUp : TrendingDown,
                     statusColor: statistics.pressure?.avg_mb > 1013 ? 'text-green-500' : 'text-blue-500',
@@ -234,8 +234,8 @@ function WeatherStatsCards({ statistics }) {
             iconBg: 'bg-orange-500/20',
             gradient: 'from-orange-500/20 via-amber-500/10 to-orange-500/20',
             metrics: [
-                { 
-                    label: 'Discomfort Risk', 
+                {
+                    label: 'Discomfort Risk',
                     value: statistics.comfort?.very_uncomfortable_prob,
                     displayValue: `${statistics.comfort?.very_uncomfortable_prob}%`,
                     warning: statistics.comfort?.very_uncomfortable_prob > 20,
@@ -243,21 +243,21 @@ function WeatherStatsCards({ statistics }) {
                     type: 'progress',
                     inverse: true
                 },
-                { 
-                    label: 'Comfort Status', 
+                {
+                    label: 'Comfort Status',
                     value: statistics.comfort?.very_uncomfortable_prob < 20 ? 'Comfortable' : 'Uncomfortable',
                     icon: statistics.comfort?.very_uncomfortable_prob < 20 ? CheckCircle : AlertTriangle,
                     statusColor: statistics.comfort?.very_uncomfortable_prob < 20 ? 'text-green-500' : 'text-orange-500',
                     type: 'status'
                 },
-                { 
-                    label: 'Data Sample', 
+                {
+                    label: 'Data Sample',
                     value: `${statistics.sample_size} years`,
                     icon: Activity,
                     type: 'value'
                 },
-                { 
-                    label: 'Data Reliability', 
+                {
+                    label: 'Data Reliability',
                     value: statistics.sample_size >= 10 ? 'High Confidence' : 'Medium Confidence',
                     icon: statistics.sample_size >= 10 ? CheckCircle : AlertTriangle,
                     statusColor: statistics.sample_size >= 10 ? 'text-green-500' : 'text-yellow-500',
@@ -272,13 +272,13 @@ function WeatherStatsCards({ statistics }) {
             {stats.map((stat, index) => {
                 const Icon = stat.icon
                 return (
-                    <Card 
+                    <Card
                         key={index}
                         className="group relative bg-card/40 backdrop-blur-xl border-2 border-border/50 shadow-xl hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:border-primary/30 hover:-translate-y-1 overflow-hidden"
                     >
                         {/* Animated gradient background */}
                         <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                        
+
                         <CardHeader className="pb-4 relative z-10">
                             <div className="flex items-center gap-3">
                                 <div className={`flex items-center justify-center w-14 h-14 rounded-xl ${stat.iconBg} transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg`}>
@@ -289,11 +289,11 @@ function WeatherStatsCards({ statistics }) {
                                 </CardTitle>
                             </div>
                         </CardHeader>
-                        
+
                         <CardContent className="space-y-4 relative z-10">
                             {stat.metrics.map((metric, idx) => {
                                 const MetricIcon = metric.icon
-                                
+
                                 if (metric.type === 'progress') {
                                     return (
                                         <div key={idx} className="space-y-2">
@@ -307,9 +307,9 @@ function WeatherStatsCards({ statistics }) {
                                                 </span>
                                             </div>
                                             <div className="relative h-2 bg-card/60 rounded-full overflow-hidden backdrop-blur-sm">
-                                                <div 
+                                                <div
                                                     className={`absolute inset-y-0 left-0 ${getProgressColor(metric.value, metric.inverse)} rounded-full transition-all duration-1000 ease-out`}
-                                                    style={{ 
+                                                    style={{
                                                         width: `${metric.value}%`,
                                                         boxShadow: `0 0 10px ${metric.warning ? 'rgba(249, 115, 22, 0.5)' : 'rgba(34, 197, 94, 0.5)'}`
                                                     }}
@@ -318,10 +318,10 @@ function WeatherStatsCards({ statistics }) {
                                         </div>
                                     )
                                 }
-                                
+
                                 if (metric.type === 'status') {
                                     return (
-                                        <div 
+                                        <div
                                             key={idx}
                                             className="flex items-center justify-between p-3 rounded-xl bg-card/60 backdrop-blur-sm border border-border/30 hover:border-border/50 transition-all duration-300"
                                         >
@@ -335,10 +335,10 @@ function WeatherStatsCards({ statistics }) {
                                         </div>
                                     )
                                 }
-                                
+
                                 if (metric.type === 'range') {
                                     return (
-                                        <div 
+                                        <div
                                             key={idx}
                                             className="p-3 rounded-xl bg-gradient-to-r from-card/40 to-card/60 backdrop-blur-sm border border-border/30 hover:border-border/50 transition-all duration-300"
                                         >
@@ -350,10 +350,10 @@ function WeatherStatsCards({ statistics }) {
                                         </div>
                                     )
                                 }
-                                
+
                                 // Default: value type
                                 return (
-                                    <div 
+                                    <div
                                         key={idx}
                                         className="flex items-center justify-between p-3 rounded-xl bg-card/60 backdrop-blur-sm border border-border/30 hover:border-border/50 hover:shadow-md transition-all duration-300"
                                     >

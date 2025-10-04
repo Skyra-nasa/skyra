@@ -10,16 +10,17 @@ export const WheatherProvider = ({ children }) => {
         lng: 0,
         nameLocation: "",
         date: "",
-        time: "",
         activity: "",
         sendData: false,
     });
     const [currentStep, setCurrentStep] = useState(1);
+    const [weatherData, setWeatherData] = useState({});
 
     return (
         <WheatherContext.Provider value={{
             selectedData, setSelectedData,
-            currentStep, setCurrentStep
+            currentStep, setCurrentStep,
+            weatherData, setWeatherData
         }}>
             {children}
         </WheatherContext.Provider>

@@ -17,49 +17,51 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import { postSelectedData } from "@/shared/api/postSelectedData";
 
 const MultistepForm = () => {
-    const { selectedData, setSelectedData, currentStep, setCurrentStep } =
+    const { selectedData, setSelectedData, currentStep, setCurrentStep, setWeatherData } =
         useContext(WheatherContext);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [transitionDirection, setTransitionDirection] = useState('forward');
     const totalSteps = 3;
     const progress = (currentStep / totalSteps) * 100;
     const [loading, setLoading] = useState(false)
-    const stepTitles = ["Select Activity", "Select Location", "Choose Date & Time"];
+    const stepTitles = ["Select Activity", "Select Location", "Choose Date"];
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [selectedLocation, setSelectedLocation] = useState(null);
     const [dateData, setDateData] = useState({
         date: '',
-        time: ''
     });
     const navigate = useNavigate();
     console.log(selectedData)
     // Send Api
-    const handleAnalyze = () => {
+    const handleAnalyze = async () => {
         setSelectedData({
             lat: selectedLocation?.lat || selectedData?.lat,
             lng: selectedLocation?.lon || selectedData?.lng,
             nameLocation: selectedLocation?.name || selectedData?.nameLocation,
             date: dateData?.date || selectedData?.date,
-            time: dateData?.time || selectedData?.time,
             activity: selectedActivity || selectedData?.activity,
             sendData: true,
         })
-        setTimeout(() => {
-            window.scrollTo({
-                top: 0,
-                left: 0,
-                behavior: "smooth"
-            });
-        }, 400);
-
-        // let data={
-
-        // }
-        // postSelectedData(setLoading,data)
-        //onSuccess
-        navigate("/dashboard");
+        let data = {
+            latitude: selectedLocation?.lat || selectedData?.lat,
+            longitude: selectedLocation?.lon || selectedData?.lng,
+            future_date: dateData?.date || selectedData?.date,
+            activity: selectedActivity || selectedData?.activity
+        }
+        let result = await postSelectedData(data, setWeatherData, setLoading);
+        if (result?.status === 200) {
+            setTimeout(() => {
+                window.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: "smooth"
+                });
+            }, 400);
+            navigate("/dashboard");
+        }
     };
 
     const handleNext = () => {
@@ -111,7 +113,7 @@ const MultistepForm = () => {
                         <span className="bg-gradient-to-b from-foreground via-foreground/80 to-foreground/60 dark:from-white dark:via-gray-100 dark:to-gray-400 bg-clip-text text-transparent">
                             {currentStep === 1 ? "Choose What Suits You Better" :
                                 currentStep === 2 ? "Pick Your Location" :
-                                    "Select Date & Time"}
+                                    "Select Date"}
                         </span>
                     </h2>
                 </div>
@@ -170,6 +172,7 @@ const MultistepForm = () => {
                         selectedActivity={selectedActivity}
                         setSelectedActivity={setSelectedActivity}
                         onNext={handleNext}
+                        onLoading={setLoading}
                     />
                 )}
                 {currentStep === 2 && (

@@ -1,19 +1,17 @@
 import axios from "axios";
 
-export const postSelectedData = async ({setLoading,data}) => {
-  setLoading(false);
-  let url = "";
+export const postSelectedData = async (data, setWeatherData, setLoading) => {
+  setLoading(true);
+  let url = `${import.meta.env.VITE_BASE_URL}/analyze`;
   try {
-    const response = await axios.post(url, {
-      //data
-      //   lat: 1.233,
-      //   lng:1.33
-    });
-
-    // console.log("", response.data);
+    const response = await axios.post(url, data);
+    console.log("response", response);
+    setWeatherData(response.data);
+    return response;
   } catch (error) {
-    console.log(error);
+    console.error("Error while posting data:", error);
+    return;
   } finally {
-    setLoading(true);
+    setLoading(false);
   }
 };

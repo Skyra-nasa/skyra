@@ -42,7 +42,7 @@ const items = [
 
 import { useState, useCallback, useContext } from 'react';
 
-function ActivityStep({ selectedActivity, setSelectedActivity, onNext }) {
+function ActivityStep({ selectedActivity, setSelectedActivity, onNext, onLoading }) {
   const [isCustomEditing, setIsCustomEditing] = useState(false);
   const [customValue, setCustomValue] = useState('');
   const { selectedData } = useContext(WheatherContext);
@@ -98,6 +98,7 @@ function ActivityStep({ selectedActivity, setSelectedActivity, onNext }) {
         animationDuration={0.5}
         staggerDelay={0.12}
         openOnLoad={true}
+        setLoading={onLoading}
       />
     </div>
   );
