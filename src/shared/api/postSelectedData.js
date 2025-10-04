@@ -4,7 +4,7 @@ export const postSelectedData = async (data, setWeatherData, setLoading) => {
   setLoading(true);
   let url = `${import.meta.env.VITE_BASE_URL}/analyze`;
   try {
-    const response = await axios.post(url, data);
+    const response = await axios.post("/api/analyze", data);
     console.log("response", response);
     setWeatherData(response.data);
     return response;
