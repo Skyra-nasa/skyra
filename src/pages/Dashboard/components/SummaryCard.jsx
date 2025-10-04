@@ -69,7 +69,7 @@ function SummaryCard({
         setMessages(prev => [...prev, { role: "user", text: userMessage }]);
         setIsLoading(true);
         try {
-            const response = await axios.post(`/api/chat`, {
+            const response = await axios.post(`https://nasa.almiraj.xyz/chat`, {
                 user_message: userMessage
             });
             const botReply = response.data.bot_reply || "Sorry, I couldn’t understand that.";
