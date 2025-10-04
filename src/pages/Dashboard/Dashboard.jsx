@@ -13,7 +13,7 @@ import HomeBackground from '@/components/homebackground'
 
 function Dashboard() {
   const navigate = useNavigate();
-  const { selectedData,weatherData } = useContext(WheatherContext);
+  const { selectedData, weatherData } = useContext(WheatherContext);
   // const [weatherData, setWeatherData] = useState(null);
 
   useEffect(() => {
@@ -141,12 +141,12 @@ function Dashboard() {
     document.body.removeChild(a)
     window.URL.revokeObjectURL(url)
   }
-console.log("weatherData",weatherData)
+  console.log("weatherData", weatherData)
   return (
     <div className='relative min-h-screen overflow-hidden '>
       {/* Galaxy Background */}
       <div className='pointer-events-none absolute inset-0 -z-10'>
-        {/* <HomeBackground /> */}
+        <HomeBackground />
       </div>
 
       <Header
@@ -183,7 +183,7 @@ console.log("weatherData",weatherData)
             windSpeed={weatherData?.statistics?.wind?.max_mph || 12}
           />
         </div>
-  
+
         {/* Weather Statistics Cards */}
         {weatherData?.statistics && (
           <div className='mb-8 animate-[fadeInUp_.8s_.25s_ease_forwards] opacity-0'>
