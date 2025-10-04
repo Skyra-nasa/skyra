@@ -3,8 +3,9 @@ import { Button } from '@/components/ui/button'
 import { MessageCircle, Send, Sparkles, Thermometer, CloudRain, Wind, Sun, Cloud } from 'lucide-react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import axios from 'axios'
 
-function SummaryCard({ 
+function SummaryCard({
     riskLevel = 'low', // 'low', 'medium', 'high'
     weatherSummary = '',
     temperature = { high: 33, low: 19, avg: 78.9 },
@@ -57,42 +58,42 @@ function SummaryCard({
         }
     }, [chatOpen])
 
-    const handleSendMessage = async () => {
-        if (!inputMessage.trim() || isLoading) return
 
-        const userMessage = inputMessage
-        setInputMessage('')
-        
+    const handleSendMessage = async () => {
+        if (!inputMessage.trim() || isLoading) return;
+
+        const userMessage = inputMessage;
+        setInputMessage("");
+
         // Add user message
-        setMessages(prev => [...prev, { role: 'user', text: userMessage }])
-        
-        // Show loading state
-        setIsLoading(true)
-        
-        // Simulate AI response delay
-        setTimeout(() => {
-            const responses = [
-                'Based on the weather analysis, the conditions look favorable for your activity. The temperature range is comfortable and precipitation probability is low.',
-                'I recommend checking the forecast closer to your event date for any last-minute changes. Current data suggests good weather conditions.',
-                'The historical data shows similar conditions have been ideal in the past. Wind speeds are expected to be moderate.',
-                'Your selected date typically experiences stable weather patterns. However, always have a backup plan ready.',
-                'The analysis indicates that outdoor activities should be safe. Make sure to stay hydrated if temperatures are high.'
-            ]
-            
-            const randomResponse = responses[Math.floor(Math.random() * responses.length)]
-            
-            setMessages(prev => [...prev, { role: 'assistant', text: randomResponse }])
-            setIsLoading(false)
-        }, 1500)
-    }
+        setMessages(prev => [...prev, { role: "user", text: userMessage }]);
+        setIsLoading(true);
+
+        try {
+            const response = await axios.post("/api/chat", {
+                user_message: userMessage
+            });
+
+            const botReply = response.data.bot_reply || "Sorry, I couldn’t understand that.";
+
+            // Add assistant reply
+            setMessages(prev => [...prev, { role: "assistant", text: botReply }]);
+
+        } catch (error) {
+            console.error("Chatbot API Error:", error);
+            setMessages(prev => [...prev, { role: "assistant", text: "Error: Could not connect to AI assistant." }]);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <>
             <div className={`group relative overflow-hidden rounded-2xl backdrop-blur-xl border-2 border-border/50 transition-all duration-500 hover:border-border/70 ${config.borderGlow} p-8`}>
-                
+
                 {/* Background gradient - only visible on hover */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${config.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                
+
                 {/* Header Section */}
                 <div className="mb-6 relative z-10">
                     <div className="flex items-center gap-2 mb-3">
@@ -153,7 +154,7 @@ function SummaryCard({
                 <div className="mt-6 relative z-10">
                     <Button
                         onClick={() => setChatOpen(true)}
-                        className="group relative overflow-hidden border-2 border-primary/50 hover:border-primary bg-card/40 hover:bg-primary/10 backdrop-blur-sm transition-all duration-500 h-12 w-full shadow-lg hover:shadow-primary/20"
+                        className="group cursor-pointer relative overflow-hidden border-2 border-primary/50 hover:border-primary bg-card/40 hover:bg-primary/10 backdrop-blur-sm transition-all duration-500 h-12 w-full shadow-lg hover:shadow-primary/20"
                     >
                         <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                         <Sparkles className="w-5 h-5 mr-2 relative z-10 text-primary" />
@@ -182,22 +183,21 @@ function SummaryCard({
                     {/* Messages Container */}
                     <div className="flex-1 overflow-y-auto space-y-4 py-4 min-h-[350px] max-h-[450px] thin-scrollbar pr-2">
                         {messages.map((msg, index) => (
-                            <div 
+                            <div
                                 key={index}
                                 className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-[fadeInUp_.3s_ease_forwards]`}
                             >
-                                <div 
-                                    className={`max-w-[85%] p-4 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl ${
-                                        msg.role === 'user' 
-                                            ? 'bg-primary text-primary-foreground rounded-br-sm' 
-                                            : 'bg-card/60 backdrop-blur-sm border border-border/50 rounded-bl-sm'
-                                    }`}
+                                <div
+                                    className={`max-w-[85%] p-4 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl ${msg.role === 'user'
+                                        ? 'bg-primary text-primary-foreground rounded-br-sm'
+                                        : 'bg-card/60 backdrop-blur-sm border border-border/50 rounded-bl-sm'
+                                        }`}
                                 >
                                     <p className="text-sm leading-relaxed">{msg.text}</p>
                                 </div>
                             </div>
                         ))}
-                        
+
                         {/* Loading Shimmer */}
                         {isLoading && (
                             <div className="flex justify-start animate-[fadeInUp_.3s_ease_forwards]">
@@ -210,7 +210,7 @@ function SummaryCard({
                                 </div>
                             </div>
                         )}
-                        
+
                         {/* Scroll anchor */}
                         <div ref={messagesEndRef} />
                     </div>
@@ -226,7 +226,7 @@ function SummaryCard({
                             disabled={isLoading}
                             className="flex-1 bg-card/60 backdrop-blur-sm border-2 border-border/50 focus:border-primary/50 h-12 text-base transition-all duration-300"
                         />
-                        <Button 
+                        <Button
                             onClick={handleSendMessage}
                             disabled={isLoading || !inputMessage.trim()}
                             className="bg-primary hover:bg-primary/90 px-6 h-12 shadow-lg hover:shadow-primary/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
