@@ -52,7 +52,7 @@ Skyra-Frontend/
 │   └── index.html
 ├── package.json
 ├── tsconfig.json
-├── vite.config.ts
+├── vite.config.js
 └── README.md
 ```
 
