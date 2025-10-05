@@ -3,22 +3,26 @@ import "./loading.scss";
 
 const loadingStates = [
     {
-        text: "Connecting to weather service...",
+        text: "Connecting to NASA POWER API...",
     },
     {
-        text: "Fetching climate data...",
+        text: "Fetching historical weather data...",
     },
     {
-        text: "Analyzing temperature patterns...",
+        text: "Analyzing temperature & precipitation patterns...",
     },
     {
-        text: "Processing humidity and wind speed...",
+        text: "Processing humidity and wind statistics...",
     },
     {
-        text: "Predicting possible rainfall...",
+        text: "Calculating atmospheric pressure trends...",
     },
     {
-        text: "Finalizing your weather report 🌍",
+        text: "Evaluating comfort & safety probabilities...",
+    },
+    {
+        text: " Generating your personalized activity forecast",
+        isSpecial: true,
     },
 ];
 

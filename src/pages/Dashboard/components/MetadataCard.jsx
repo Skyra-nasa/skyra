@@ -25,13 +25,6 @@ function MetadataCard({ metadata }) {
             })
         },
         {
-            icon: Database,
-            iconColor: 'text-purple-500',
-            iconBg: 'bg-purple-500/20',
-            label: 'Data Source',
-            value: metadata.data_source
-        },
-        {
             icon: FileText,
             iconColor: 'text-orange-500',
             iconBg: 'bg-orange-500/20',
@@ -47,7 +40,7 @@ function MetadataCard({ metadata }) {
     return (
         <Card className="bg-card/40 backdrop-blur-xl border-2 border-border/50 shadow-xl">
             <CardContent className="p-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {metadataItems.map((item, index) => {
                         const Icon = item.icon
                         return (

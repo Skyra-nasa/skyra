@@ -37,6 +37,7 @@ const MultistepForm = () => {
     console.log(selectedData)
     // Send Api
     const handleAnalyze = async () => {
+        setLoading(true);
         setSelectedData({
             lat: selectedLocation?.lat || selectedData?.lat,
             lng: selectedLocation?.lon || selectedData?.lng,
@@ -51,16 +52,23 @@ const MultistepForm = () => {
             future_date: dateData?.date || selectedData?.date,
             activity: selectedActivity || selectedData?.activity
         }
-        let result = await postSelectedData(data, setWeatherData, setLoading);
+        let result = await postSelectedData(data, setWeatherData, () => {});
         if (result?.status === 200) {
+            // Keep loading screen for a moment to show the special completion step
             setTimeout(() => {
                 window.scrollTo({
                     top: 0,
                     left: 0,
                     behavior: "smooth"
                 });
-            }, 400);
-            navigate("/dashboard");
+                navigate("/dashboard");
+                // Only hide loader after navigation starts
+                setTimeout(() => {
+                    setLoading(false);
+                }, 100);
+            }, 2000);
+        } else {
+            setLoading(false);
         }
     };
 

@@ -10,16 +10,24 @@ import WeatherStatsCards from './components/WeatherStatsCards'
 import MetadataCard from './components/MetadataCard'
 import { useNavigate } from 'react-router-dom'
 import HomeBackground from '@/components/homebackground'
+import { BarChart3, LineChart } from 'lucide-react'
 
 function Dashboard() {
   const navigate = useNavigate();
   const { selectedData, weatherData } = useContext(WheatherContext);
+  const [activeTab, setActiveTab] = useState('data'); // 'data' or 'charts'
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     if (selectedData.date === "") {
       navigate('/');
     }
   }, [selectedData, navigate])
+
+  useEffect(() => {
+    // Trigger entry animations on mount
+    setMounted(true);
+  }, [])
 
 
   const flattenObject = (obj, parentKey = "", res = {}) => {
@@ -78,48 +86,96 @@ function Dashboard() {
         showBackButton={true}
       />
 
-      <div className='mx-auto px-4 sm:px-6 lg:px-8 pb-20 relative z-10'>
-        {/* Data Selected Cards - Full Width */}
-        <div className='mb-8 mt-10 animate-[fadeInUp_.8s_.1s_ease_forwards] opacity-0'>
-          <DataSelectedCards />
-        </div>
-
-        {/* Metadata Card */}
-        {weatherData?.metadata && (
-          <div className='mb-8 animate-[fadeInUp_.8s_.15s_ease_forwards] opacity-0'>
-            <MetadataCard metadata={weatherData.metadata} />
+      <div className='max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pb-20 relative z-10'>
+        {/* Overview Section */}
+        <div className={`mb-12 mt-10 space-y-6 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <h2 className='text-2xl font-bold mb-6 bg-gradient-to-b from-foreground via-foreground/90 to-foreground/70 dark:from-white dark:via-gray-100 dark:to-gray-400 bg-clip-text text-transparent'>
+            Weather Analysis Overview
+          </h2>
+          
+          {/* Selection Cards - Single Row */}
+          <div className={`transition-all duration-700 delay-100 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <DataSelectedCards />
           </div>
-        )}
 
-        {/* Summary Card with AI Assistant - Full Width */}
-        <div className='mb-8 animate-[fadeInUp_.8s_.2s_ease_forwards] opacity-0'>
-          <SummaryCard
-            riskLevel="low"
-            weatherSummary={weatherData?.llm_summary || "Loading weather analysis..."}
-            temperature={{
-              high: weatherData?.statistics?.temperature?.max_celsius || 33,
-              low: weatherData?.statistics?.temperature?.min_celsius || 19,
-              avg: weatherData?.statistics?.temperature?.avg_celsius || 78.9
-            }}
-            rainProb={weatherData?.statistics?.rain?.rainy_day_prob || 15}
-            windSpeed={weatherData?.statistics?.wind?.max_mph || 12}
-          />
+          {/* AI Summary Card */}
+          <div className={`transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <SummaryCard
+              riskLevel="low"
+              weatherSummary={weatherData?.llm_summary || "Loading weather analysis..."}
+              temperature={{
+                high: weatherData?.statistics?.temperature?.max_celsius || 33,
+                low: weatherData?.statistics?.temperature?.min_celsius || 19,
+                avg: weatherData?.statistics?.temperature?.avg_celsius || 78.9
+              }}
+              rainProb={weatherData?.statistics?.rain?.rainy_day_prob || 15}
+              windSpeed={weatherData?.statistics?.wind?.max_mph || 12}
+            />
+          </div>
         </div>
 
-        {/* Weather Statistics Cards */}
+        {/* Tabbed Section for Statistics and Charts */}
         {weatherData?.statistics && (
-          <div className='mb-8 animate-[fadeInUp_.8s_.25s_ease_forwards] opacity-0'>
-            <WeatherStatsCards statistics={weatherData.statistics} />
+          <div className={`mb-12 transition-all duration-700 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            {/* Header with Tabs on Right */}
+            <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6'>
+              <h2 className='text-2xl font-bold bg-gradient-to-b from-foreground via-foreground/90 to-foreground/70 dark:from-white dark:via-gray-100 dark:to-gray-400 bg-clip-text text-transparent'>
+                Weather Analysis Details
+              </h2>
+
+              {/* Tab Navigation - Right Side */}
+              <div className='flex gap-2 p-1 bg-card/50 backdrop-blur-sm rounded-lg border border-border/50 w-fit'>
+                <button
+                  onClick={() => setActiveTab('data')}
+                  className={`px-5 py-2.5 rounded-md font-medium transition-all duration-200 flex items-center gap-2 ${
+                    activeTab === 'data'
+                      ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+                  }`}
+                >
+                  <BarChart3 className='w-4 h-4' />
+                  Statistics
+                </button>
+                <button
+                  onClick={() => setActiveTab('charts')}
+                  className={`px-5 py-2.5 rounded-md font-medium transition-all duration-200 flex items-center gap-2 ${
+                    activeTab === 'charts'
+                      ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+                  }`}
+                >
+                  <LineChart className='w-4 h-4' />
+                  Charts
+                </button>
+              </div>
+            </div>
+
+            {/* Tab Content */}
+            <div className='min-h-[600px]'>
+              {activeTab === 'data' && (
+                <div className='animate-[fadeIn_.4s_ease-in] space-y-8'>
+                  <p className='text-muted-foreground text-sm mb-6'>
+                    Comprehensive breakdown of all weather parameters and probabilities
+                  </p>
+                  <WeatherStatsCards statistics={weatherData.statistics} />
+                </div>
+              )}
+
+              {activeTab === 'charts' && (
+                <div className='animate-[fadeIn_.4s_ease-in] space-y-6'>
+                  <p className='text-muted-foreground text-sm mb-6'>
+                    Visual representations of historical weather data and trends
+                  </p>
+                  <div className='flex gap-6 max-lg:flex-wrap'>
+                    <BarChartDetails weatherData={weatherData} />
+                    <PieChartDetail weatherData={weatherData} />
+                  </div>
+                  <LineChartDetails weatherData={weatherData} />
+                </div>
+              )}
+            </div>
           </div>
         )}
-
-        <div className='flex gap-6 max-lg:flex-wrap mb-8 animate-[fadeInUp_.8s_.3s_ease_forwards] opacity-0'>
-          <BarChartDetails weatherData={weatherData} />
-          <PieChartDetail weatherData={weatherData} />
-        </div>
-        <div className='animate-[fadeInUp_.8s_.35s_ease_forwards] opacity-0'>
-          <LineChartDetails weatherData={weatherData} />
-        </div>
       </div>
     </div>
   )

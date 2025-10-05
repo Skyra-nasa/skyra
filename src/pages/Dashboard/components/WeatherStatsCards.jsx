@@ -240,7 +240,7 @@ function WeatherStatsCards({ statistics }) {
                     displayValue: `${statistics.comfort?.very_uncomfortable_prob}%`,
                     warning: statistics.comfort?.very_uncomfortable_prob > 20,
                     icon: statistics.comfort?.very_uncomfortable_prob > 20 ? AlertTriangle : CheckCircle,
-                    type: 'progress',
+                    type: 'status',
                     inverse: true
                 },
                 {
@@ -268,16 +268,22 @@ function WeatherStatsCards({ statistics }) {
     ]
 
     return (
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-            {stats.map((stat, index) => {
-                const Icon = stat.icon
-                return (
-                    <Card
-                        key={index}
-                        className="group relative bg-card/40 backdrop-blur-xl border-2 border-border/50 shadow-xl hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:border-primary/30 hover:-translate-y-1 overflow-hidden"
-                    >
-                        {/* Animated gradient background */}
-                        <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+        <div className='space-y-8'>
+            {/* Primary Metrics - Larger Cards */}
+            <div>
+                <h3 className='text-lg font-semibold mb-4 text-foreground/80 uppercase tracking-wider text-sm'>
+                    Core Weather Metrics
+                </h3>
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                    {stats.slice(0, 2).map((stat, index) => {
+                        const Icon = stat.icon
+                        return (
+                            <Card
+                                key={index}
+                                className="group relative bg-card/40 backdrop-blur-xl border-2 border-border/50 shadow-xl hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:border-primary/30 hover:-translate-y-1 overflow-hidden"
+                            >
+                                {/* Animated gradient background */}
+                                <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
 
                         <CardHeader className="pb-4 relative z-10">
                             <div className="flex items-center gap-3">
@@ -372,8 +378,225 @@ function WeatherStatsCards({ statistics }) {
                             })}
                         </CardContent>
                     </Card>
-                )
-            })}
+                        )
+                    })}
+                </div>
+            </div>
+
+            {/* Secondary Metrics - Grid Layout */}
+            <div>
+                <h3 className='text-lg font-semibold mb-4 text-foreground/80 uppercase tracking-wider text-sm'>
+                    Environmental Conditions
+                </h3>
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+                    {stats.slice(2, 5).map((stat, index) => {
+                        const Icon = stat.icon
+                        return (
+                            <Card
+                                key={index}
+                                className="group relative bg-card/40 backdrop-blur-xl border-2 border-border/50 shadow-xl hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:border-primary/30 hover:-translate-y-1 overflow-hidden"
+                            >
+                                {/* Animated gradient background */}
+                                <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+
+                                <CardHeader className="pb-4 relative z-10">
+                                    <div className="flex items-center gap-3">
+                                        <div className={`flex items-center justify-center w-12 h-12 rounded-xl ${stat.iconBg} transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg`}>
+                                            <Icon className={`w-6 h-6 ${stat.iconColor} transition-transform duration-300 group-hover:rotate-12`} />
+                                        </div>
+                                        <CardTitle className="text-base font-bold bg-gradient-to-b from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
+                                            {stat.title}
+                                        </CardTitle>
+                                    </div>
+                                </CardHeader>
+
+                                <CardContent className="space-y-3 relative z-10">
+                                    {stat.metrics.map((metric, idx) => {
+                                        const MetricIcon = metric.icon
+
+                                        if (metric.type === 'progress') {
+                                            return (
+                                                <div key={idx} className="space-y-1.5">
+                                                    <div className="flex items-center justify-between">
+                                                        <div className="flex items-center gap-2">
+                                                            <MetricIcon className={`w-3.5 h-3.5 ${metric.warning ? 'text-orange-500' : 'text-muted-foreground'}`} />
+                                                            <span className="text-xs text-muted-foreground">{metric.label}</span>
+                                                        </div>
+                                                        <span className={`text-xs font-bold ${getProbabilityColor(metric.value, metric.inverse)}`}>
+                                                            {metric.displayValue}
+                                                        </span>
+                                                    </div>
+                                                    <div className="relative h-1.5 bg-card/60 rounded-full overflow-hidden backdrop-blur-sm">
+                                                        <div
+                                                            className={`absolute inset-y-0 left-0 ${getProgressColor(metric.value, metric.inverse)} rounded-full transition-all duration-1000 ease-out`}
+                                                            style={{
+                                                                width: `${metric.value}%`,
+                                                                boxShadow: `0 0 8px ${metric.warning ? 'rgba(249, 115, 22, 0.4)' : 'rgba(34, 197, 94, 0.4)'}`
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            )
+                                        }
+
+                                        if (metric.type === 'status') {
+                                            return (
+                                                <div
+                                                    key={idx}
+                                                    className="flex items-center justify-between p-2.5 rounded-lg bg-card/60 backdrop-blur-sm border border-border/30 hover:border-border/50 transition-all duration-300"
+                                                >
+                                                    <div className="flex items-center gap-1.5">
+                                                        <MetricIcon className={`w-3.5 h-3.5 ${metric.statusColor}`} />
+                                                        <span className="text-xs text-muted-foreground">{metric.label}</span>
+                                                    </div>
+                                                    <span className={`text-xs font-bold ${metric.statusColor}`}>
+                                                        {metric.value}
+                                                    </span>
+                                                </div>
+                                            )
+                                        }
+
+                                        if (metric.type === 'range') {
+                                            return (
+                                                <div
+                                                    key={idx}
+                                                    className="p-2.5 rounded-lg bg-gradient-to-r from-card/40 to-card/60 backdrop-blur-sm border border-border/30 hover:border-border/50 transition-all duration-300"
+                                                >
+                                                    <div className="flex items-center gap-1.5 mb-0.5">
+                                                        <MetricIcon className="w-3.5 h-3.5 text-muted-foreground" />
+                                                        <span className="text-[10px] text-muted-foreground uppercase tracking-wide">{metric.label}</span>
+                                                    </div>
+                                                    <div className="text-sm font-bold text-foreground">{metric.value}</div>
+                                                </div>
+                                            )
+                                        }
+
+                                        // Default: value type
+                                        return (
+                                            <div
+                                                key={idx}
+                                                className="flex items-center justify-between p-2.5 rounded-lg bg-card/60 backdrop-blur-sm border border-border/30 hover:border-border/50 hover:shadow-md transition-all duration-300"
+                                            >
+                                                <div className="flex items-center gap-1.5">
+                                                    <MetricIcon className="w-3.5 h-3.5 text-muted-foreground" />
+                                                    <span className="text-xs text-muted-foreground">{metric.label}</span>
+                                                </div>
+                                                <div className="text-right">
+                                                    <div className="text-xs font-bold text-foreground">{metric.value}</div>
+                                                    {metric.subValue && (
+                                                        <div className="text-[10px] text-muted-foreground">{metric.subValue}</div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </CardContent>
+                            </Card>
+                        )
+                    })}
+                </div>
+            </div>
+
+            {/* Overall Comfort - Full Width */}
+            <div>
+                <h3 className='text-lg font-semibold mb-4 text-foreground/80 uppercase tracking-wider text-sm'>
+                    Comfort & Data Quality
+                </h3>
+                <div className='grid grid-cols-1'>
+                    {stats.slice(5).map((stat, index) => {
+                        const Icon = stat.icon
+                        return (
+                            <Card
+                                key={index}
+                                className="group relative bg-card/40 backdrop-blur-xl border-2 border-border/50 shadow-xl hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:border-primary/30 overflow-hidden"
+                            >
+                                {/* Animated gradient background */}
+                                <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+
+                                <CardHeader className="pb-4 relative z-10">
+                                    <div className="flex items-center gap-3">
+                                        <div className={`flex items-center justify-center w-14 h-14 rounded-xl ${stat.iconBg} transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg`}>
+                                            <Icon className={`w-7 h-7 ${stat.iconColor} transition-transform duration-300 group-hover:rotate-12`} />
+                                        </div>
+                                        <CardTitle className="text-lg font-bold bg-gradient-to-b from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
+                                            {stat.title}
+                                        </CardTitle>
+                                    </div>
+                                </CardHeader>
+
+                                <CardContent className="relative z-10">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                                        {stat.metrics.map((metric, idx) => {
+                                            const MetricIcon = metric.icon
+
+                                            if (metric.type === 'progress') {
+                                                return (
+                                                    <div key={idx} className="space-y-2">
+                                                        <div className="flex items-center justify-between">
+                                                            <div className="flex items-center gap-2">
+                                                                <MetricIcon className={`w-4 h-4 ${metric.warning ? 'text-orange-500' : 'text-muted-foreground'}`} />
+                                                                <span className="text-sm text-muted-foreground">{metric.label}</span>
+                                                            </div>
+                                                            <span className={`text-sm font-bold ${getProbabilityColor(metric.value, metric.inverse)}`}>
+                                                                {metric.displayValue}
+                                                            </span>
+                                                        </div>
+                                                        <div className="relative h-2 bg-card/60 rounded-full overflow-hidden backdrop-blur-sm">
+                                                            <div
+                                                                className={`absolute inset-y-0 left-0 ${getProgressColor(metric.value, metric.inverse)} rounded-full transition-all duration-1000 ease-out`}
+                                                                style={{
+                                                                    width: `${metric.value}%`,
+                                                                    boxShadow: `0 0 10px ${metric.warning ? 'rgba(249, 115, 22, 0.5)' : 'rgba(34, 197, 94, 0.5)'}`
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                )
+                                            }
+
+                                            if (metric.type === 'status') {
+                                                return (
+                                                    <div
+                                                        key={idx}
+                                                        className="flex items-center justify-between p-3 rounded-xl bg-card/60 backdrop-blur-sm border border-border/30 hover:border-border/50 transition-all duration-300"
+                                                    >
+                                                        <div className="flex items-center gap-2">
+                                                            <MetricIcon className={`w-4 h-4 ${metric.statusColor}`} />
+                                                            <span className="text-sm text-muted-foreground">{metric.label}</span>
+                                                        </div>
+                                                        <span className={`text-sm font-bold ${metric.statusColor}`}>
+                                                            {metric.value}
+                                                        </span>
+                                                    </div>
+                                                )
+                                            }
+
+                                            // Default: value type
+                                            return (
+                                                <div
+                                                    key={idx}
+                                                    className="flex items-center justify-between p-3 rounded-xl bg-card/60 backdrop-blur-sm border border-border/30 hover:border-border/50 hover:shadow-md transition-all duration-300"
+                                                >
+                                                    <div className="flex items-center gap-2">
+                                                        <MetricIcon className="w-4 h-4 text-muted-foreground" />
+                                                        <span className="text-sm text-muted-foreground">{metric.label}</span>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <div className="text-sm font-bold text-foreground">{metric.value}</div>
+                                                        {metric.subValue && (
+                                                            <div className="text-xs text-muted-foreground">{metric.subValue}</div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        )
+                    })}
+                </div>
+            </div>
         </div>
     )
 }
