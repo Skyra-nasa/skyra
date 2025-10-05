@@ -102,14 +102,14 @@ const MultistepForm = () => {
         }
     };
 
-    return loading ? <MultiStepLoaderDemo loading={loading} setLoading={setLoading} /> : (<div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-20 space-y-8">
-        <div className="space-y-4">
-            <div className="flex justify-between items-center">
-                <div className="flex items-center gap-8">
+    return loading ? <MultiStepLoaderDemo loading={loading} setLoading={setLoading} /> : (<div className={`${currentStep!==1?"container":""} mx-auto px-4 mt-10 mb-20 space-y-8`}>
+        <div className="space-y-4 mb-4">
+            <div className="flex justify-between items-center gap-1 max-w-[900px]:gap-4 flex-wrap"> 
+                <div className="flex items-center max-sm:flex-wrap gap-8">
                     <span className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium tracking-wide">
                         Step {currentStep}
                     </span>
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-[1.1] tracking-tight">
+                    <h2 className="text-[26px] max-sm:mb-4 sm:text-3xl md:text-4xl font-bold leading-[1.1] tracking-tight">
                         <span className="bg-gradient-to-b from-foreground via-foreground/80 to-foreground/60 dark:from-white dark:via-gray-100 dark:to-gray-400 bg-clip-text text-transparent">
                             {currentStep === 1 ? "Choose What Suits You Better" :
                                 currentStep === 2 ? "Pick Your Location" :
@@ -121,7 +121,7 @@ const MultistepForm = () => {
                     <button
                         type="button"
                         onClick={handleNext}
-                        className="group relative inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-primary/90 via-primary to-primary/95 hover:from-primary hover:via-primary/95 hover:to-primary text-primary-foreground px-6 py-2.5 text-sm font-semibold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/35 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/30 hover:-translate-y-0.5 active:translate-y-0 overflow-hidden"
+                        className="group relative ml-auto max-md:mt-2 inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-primary/90 via-primary to-primary/95 hover:from-primary hover:via-primary/95 hover:to-primary text-primary-foreground px-6 py-2.5 text-sm font-semibold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/35 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/30 hover:-translate-y-0.5 active:translate-y-0 overflow-hidden"
                     >
                         <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
                         <span className="relative flex items-center gap-2">
