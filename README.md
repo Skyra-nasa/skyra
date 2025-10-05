@@ -4,7 +4,7 @@
 
 ---
 
-## 🚀 Overview  
+## Overview  
 
 Skyra’s frontend provides an interactive interface where users can:  
 - Select an **activity**, **location**, and **date/time**  
