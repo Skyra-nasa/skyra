@@ -45,15 +45,16 @@ function HeroSection() {
   const navigate = useNavigate();
 
   return (
-    <section className="relative flex items-start justify-center w-full pt-20 pb-12 sm:pb-20 min-h-[100vh]">
+    <section className="relative flex items-center justify-center w-full py-12 min-h-screen">
       {/* Galaxy Background */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <HomeBackground />
       </div>
+      
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col items-center w-full">
-          <div className="w-full max-w-5xl text-center relative -mt-12">
+          <div className="w-full max-w-5xl text-center relative">
 
             <h1 className="font-bold leading-[1.05] tracking-tight text-balance animate-[fadeInUp_.8s_.05s_ease_forwards] opacity-0">
               <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[4.75rem] xl:text-[5.2rem] bg-gradient-to-b from-foreground via-foreground/80 to-foreground/60 dark:from-white dark:via-gray-100 dark:to-gray-400 bg-clip-text text-transparent">
@@ -80,21 +81,7 @@ function HeroSection() {
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1 duration-300" />
               </span>
             </button>
-            <div className="relative h-[280px] sm:h-[300px] lg:h-[350px] w-full overflow-visible ">
-              <div className="absolute inset-0 scale-95 lg:scale-100 ">
-                <BubbleMenu
-                  logo={null}
-                  items={heroItems}
-                  onActivitySelect={() => { }}
-                  selectedActivity={null}
-                  useFixedPosition={false}
-                  animationEase="back.out(1.5)"
-                  animationDuration={0.5}
-                  staggerDelay={0.12}
-                  openOnLoad={true}
-                />
-              </div>
-            </div>
+        
           </div>
           <div className="max-[900px]:hidden mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 animate-[fadeInUp_.8s_.25s_ease_forwards] opacity-0">
             <button

@@ -37,7 +37,7 @@ uniform bool uTransparent;
 
 varying vec2 vUv;
 
-#define NUM_LAYER 4.0
+#define NUM_LAYER 2.0
 #define STAR_COLOR_CUTOFF 0.2
 #define MAT45 mat2(0.7071, -0.7071, 0.7071, 0.7071)
 #define PERIOD 3.0
@@ -86,8 +86,8 @@ vec3 StarLayer(vec2 uv) {
   vec2 gv = fract(uv) - 0.5; 
   vec2 id = floor(uv);
 
-  for (int y = -1; y <= 1; y++) {
-    for (int x = -1; x <= 1; x++) {
+  for (int y = 0; y <= 0; y++) {
+    for (int x = 0; x <= 0; x++) {
       vec2 offset = vec2(float(x), float(y));
       vec2 si = id + vec2(float(x), float(y));
       float seed = Hash21(si);
@@ -199,7 +199,9 @@ export default function Galaxy({
     const ctn = ctnDom.current;
     const renderer = new Renderer({
       alpha: transparent,
-      premultipliedAlpha: false
+      premultipliedAlpha: false,
+      antialias: false,
+      powerPreference: 'low-power'
     });
     const gl = renderer.gl;
 
@@ -214,7 +216,7 @@ export default function Galaxy({
     let program;
 
     function resize() {
-      const scale = 1;
+      const scale = 0.5;
       renderer.setSize(ctn.offsetWidth * scale, ctn.offsetHeight * scale);
       if (program) {
         program.uniforms.uResolution.value = new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height);
@@ -276,6 +278,8 @@ export default function Galaxy({
       renderer.render({ scene: mesh });
     }
     animateId = requestAnimationFrame(update);
+    gl.canvas.style.width = '100%';
+    gl.canvas.style.height = '100%';
     ctn.appendChild(gl.canvas);
 
     function handleMouseMove(e) {
