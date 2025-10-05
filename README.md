@@ -54,8 +54,10 @@ Skyra-Frontend/
 ├── tsconfig.json
 ├── vite.config.ts
 └── README.md
+```
 
-
+## ⚙️ Setup & Run Locally
+```
 # Clone the frontend repository
 git clone https://github.com/Skyra-nasa/Skyra-Frontend.git
 cd Skyra-Frontend
