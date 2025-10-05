@@ -45,7 +45,7 @@ function HeroSection() {
   const navigate = useNavigate();
 
   return (
-    <section className="relative flex items-start justify-center w-full overflow-hidden pt-20 pb-12 sm:pb-20 min-h-[100vh]">
+    <section className="relative flex items-start justify-center w-full pt-20 pb-12 sm:pb-20 min-h-[100vh]">
       {/* Galaxy Background */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <HomeBackground />
@@ -53,7 +53,7 @@ function HeroSection() {
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col items-center w-full">
-          <div className="w-full max-w-5xl text-center relative">
+          <div className="w-full max-w-5xl text-center relative -mt-12">
 
             <h1 className="font-bold leading-[1.05] tracking-tight text-balance animate-[fadeInUp_.8s_.05s_ease_forwards] opacity-0">
               <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[4.75rem] xl:text-[5.2rem] bg-gradient-to-b from-foreground via-foreground/80 to-foreground/60 dark:from-white dark:via-gray-100 dark:to-gray-400 bg-clip-text text-transparent">
@@ -69,9 +69,19 @@ function HeroSection() {
 
           </div>
 
-          <div className="relative w-full max-w-6xl mt-6 ">
-            <div className="relative h-[280px] sm:h-[300px] lg:h-[350px] w-full overflow-visible">
-              <div className="absolute inset-0 scale-95 lg:scale-100">
+          <div className="relative w-full">
+            <button
+              className="group min-[900px]:hidden px-7 mx-auto mt-5 w-fit h-7 relative cursor-pointer flex items-center gap-2 rounded-full bg-primary/90 backdrop-blur-md border border-primary/30 text-primary-foreground  py-5 text-base sm:text-lg font-semibold tracking-wide shadow-2xl shadow-primary/20 hover:bg-primary hover:border-primary/50 hover:shadow-primary/30 transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-primary/50 hover:-translate-y-1 hover:scale-[1.02] active:scale-[0.98] overflow-hidden"
+              onClick={() => navigate("/home")}
+            >
+              <div className="bg-gradient-to-r w-fit from-primary/20 via-transparent to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <span className="relative flex items-center gap-2 z-10 font-semibold tracking-wider leading-none">
+                Check Your Parade Is Safe ?
+                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1 duration-300" />
+              </span>
+            </button>
+            <div className="relative h-[280px] sm:h-[300px] lg:h-[350px] w-full overflow-visible ">
+              <div className="absolute inset-0 scale-95 lg:scale-100 ">
                 <BubbleMenu
                   logo={null}
                   items={heroItems}
@@ -86,9 +96,9 @@ function HeroSection() {
               </div>
             </div>
           </div>
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 animate-[fadeInUp_.8s_.25s_ease_forwards] opacity-0">
+          <div className="max-[900px]:hidden mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 animate-[fadeInUp_.8s_.25s_ease_forwards] opacity-0">
             <button
-              className="group relative cursor-pointer inline-flex items-center gap-3 rounded-full bg-primary/90 backdrop-blur-md border border-primary/30 text-primary-foreground px-10 py-5 text-base sm:text-lg font-semibold tracking-wide shadow-2xl shadow-primary/20 hover:bg-primary hover:border-primary/50 hover:shadow-primary/30 transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-primary/50 hover:-translate-y-1 hover:scale-[1.02] active:scale-[0.98] overflow-hidden"
+              className="group top-[24px] relative cursor-pointer inline-flex items-center gap-3 rounded-full bg-primary/90 backdrop-blur-md border border-primary/30 text-primary-foreground px-10 py-5 text-base sm:text-lg font-semibold tracking-wide shadow-2xl shadow-primary/20 hover:bg-primary hover:border-primary/50 hover:shadow-primary/30 transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-primary/50 hover:-translate-y-1 hover:scale-[1.02] active:scale-[0.98] overflow-hidden"
               onClick={() => navigate("/home")}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-transparent to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

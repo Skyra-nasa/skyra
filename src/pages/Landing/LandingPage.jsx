@@ -10,7 +10,7 @@ function LandingPage() {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Header />
-      <main className="flex-1 flex items-center relative overflow-hidden">
+      <main className="flex-1 flex items-center relative">
         <div className="w-full max-w-7xl mx-auto px-6 lg:px-10 py-12 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
           {/* Left: floating activity bubbles repurposed */}
           <div className="relative order-2 lg:order-1 min-h-[480px] flex items-center justify-center">

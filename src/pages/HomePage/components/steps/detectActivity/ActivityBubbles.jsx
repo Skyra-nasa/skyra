@@ -314,7 +314,10 @@ export default function BubbleMenu({
         @media (max-width: 899px) {
           .bubble-menu-items {
             padding-top: 40px;
-            align-items: flex-start;
+            align-items:center;
+            justify-content:center;
+            inset:auto;
+            margin-right:20px
           }
           .bubble-menu-items .pill-list {
             row-gap: 16px;
@@ -338,6 +341,7 @@ export default function BubbleMenu({
             transform: scale(.94);
           }
         }
+          
       `}</style>
 
       <nav className={containerClassName} style={style} aria-label="Main navigation">
@@ -371,9 +375,9 @@ export default function BubbleMenu({
         <div
           ref={overlayRef}
           className={[
-            'bubble-menu-items',
+            'bubble-menu-items mt-14 max-[900px]:mt-0',
             useFixedPosition ? 'fixed' : 'absolute',
-            'inset-0',
+            'inset-0 ',
             'flex items-center justify-center',
             'pointer-events-none',
             'z-[1000]'
