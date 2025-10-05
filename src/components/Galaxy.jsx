@@ -216,8 +216,13 @@ export default function Galaxy({
     let program;
 
     function resize() {
-      const scale = 0.5;
-      renderer.setSize(ctn.offsetWidth * scale, ctn.offsetHeight * scale);
+      const isMobile = window.innerWidth < 768;
+      const scale = isMobile ? 0.6 : 0.75;
+      const width = ctn.offsetWidth * scale;
+      const height = ctn.offsetHeight * scale;
+      renderer.setSize(width, height);
+      gl.canvas.style.width = ctn.offsetWidth + 'px';
+      gl.canvas.style.height = ctn.offsetHeight + 'px';
       if (program) {
         program.uniforms.uResolution.value = new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height);
       }
@@ -278,8 +283,6 @@ export default function Galaxy({
       renderer.render({ scene: mesh });
     }
     animateId = requestAnimationFrame(update);
-    gl.canvas.style.width = '100%';
-    gl.canvas.style.height = '100%';
     ctn.appendChild(gl.canvas);
 
     function handleMouseMove(e) {
