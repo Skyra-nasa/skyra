@@ -15,7 +15,7 @@ import { BarChart3, LineChart } from 'lucide-react'
 function Dashboard() {
   const navigate = useNavigate();
   const { selectedData, weatherData } = useContext(WheatherContext);
-  const [activeTab, setActiveTab] = useState('data'); // 'data' or 'charts'
+  const [activeTab, setActiveTab] = useState('charts'); // 'data' or 'charts' - default to charts
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

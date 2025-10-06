@@ -97,7 +97,9 @@ export default function BubbleMenu({
   const containerClassName = [
     'bubble-menu',
     useFixedPosition ? 'fixed' : 'absolute',
-    'left-0 right-0 top-8',
+    'left-0 right-0',
+    // Center the bubbles for activity step, otherwise use top positioning
+    openOnLoad ? 'top-0 bottom-0' : 'top-8',
     'flex items-center justify-between',
     'gap-4 px-8',
     'pointer-events-none',

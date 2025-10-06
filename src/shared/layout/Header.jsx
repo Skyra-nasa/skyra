@@ -15,9 +15,7 @@ function Header({
   const navigate = useNavigate()
 
   const handleLogoClick = () => {
-    if (!showBackButton) {
-      navigate("/")
-    }
+    navigate("/")
   }
 
   return (
@@ -25,7 +23,7 @@ function Header({
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center justify-between">
           <div
-            className={`flex items-center gap-3 animate-[fadeInUp_.8s_.05s_ease_forwards] opacity-0 ${!showBackButton ? 'cursor-pointer' : ''}`}
+            className="flex items-center gap-3 animate-[fadeInUp_.8s_.05s_ease_forwards] opacity-0 cursor-pointer"
             onClick={handleLogoClick}
           >
             <Satellite className="h-8 w-8 text-primary" />

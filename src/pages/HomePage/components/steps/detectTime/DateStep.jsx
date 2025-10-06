@@ -27,7 +27,6 @@ const DateStep = ({ dateData, setDateData }) => {
 
     return (
         <div className="w-full max-w-4xl mx-auto space-y-8">
-            {/* Hero Section */}
             <div className="text-center space-y-4 mb-8">
                 <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-primary/10 border-2 border-primary/20 mb-4">
                     <Calendar className="h-8 w-8 text-primary" />

@@ -7,6 +7,7 @@ import ActivityStep from "./steps/detectActivity/ActivityStep.jsx";
 import { useNavigate } from "react-router-dom";
 import { MultiStepLoaderDemo } from "@/shared/ui/Loading/Loading";
 import { WheatherContext } from "@/shared/context/WhetherProvider";
+import HomeBackground from "@/components/homebackground";
 import {
     Dialog,
     DialogClose,
@@ -110,7 +111,14 @@ const MultistepForm = () => {
         }
     };
 
-    return loading ? <MultiStepLoaderDemo loading={loading} setLoading={setLoading} /> : (<div className={`${currentStep!==1?"container":""} mx-auto px-4 mt-10 mb-20 space-y-8`}>
+    return loading ? <MultiStepLoaderDemo loading={loading} setLoading={setLoading} /> : (
+    <div className="relative min-h-screen overflow-hidden">
+        {/* Galaxy Background */}
+        <div className="pointer-events-none absolute inset-0 z-0">
+            <HomeBackground />
+        </div>
+        
+        <div className={`${currentStep!==1?"container":""} mx-auto px-4 mt-10 mb-20 space-y-8 relative z-[1010]`}>
         <div className="space-y-4 mb-4">
             <div className="flex justify-between items-center gap-1 max-w-[900px]:gap-4 flex-wrap"> 
                 <div className="flex items-center max-sm:flex-wrap gap-8">
@@ -245,7 +253,9 @@ const MultistepForm = () => {
                     )}
             </div>
         )}
-    </div>)
+        </div>
+    </div>
+    )
 };
 
 export default MultistepForm;

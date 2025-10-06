@@ -1,45 +1,9 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CloudSun, Brain, Shield } from "lucide-react";
 import BubbleMenu from "./steps/detectActivity/ActivityBubbles";
 import { useNavigate } from "react-router-dom";
 import HomeBackground from "../../../components/homebackground";
 
-const heroItems = [
-  {
-    label: '🏛️ Indoor',
-    value: 'vacation',
-    ariaLabel: 'Vacation',
-    rotation: -8,
-    hoverStyles: { bgColor: 'var(--chart-1)', textColor: 'var(--primary-foreground)' }
-  },
-  {
-    label: '🥾 Hiking',
-    value: 'hiking',
-    ariaLabel: 'Hiking',
-    rotation: 8,
-    hoverStyles: { bgColor: 'var(--chart-2)', textColor: 'var(--primary-foreground)' }
-  },
-  {
-    label: '🏖️ Beach',
-    value: 'beach',
-    ariaLabel: 'Beach',
-    rotation: 8,
-    hoverStyles: { bgColor: 'var(--chart-3)', textColor: 'var(--primary-foreground)' }
-  },
-  {
-    label: '⚽ Sports',
-    value: 'sports',
-    ariaLabel: 'Sports',
-    rotation: 8,
-    hoverStyles: { bgColor: 'var(--chart-4)', textColor: 'var(--primary-foreground)' }
-  },
-  {
-    label: '🎉 Party',
-    value: 'party',
-    ariaLabel: 'Party',
-    rotation: -8,
-    hoverStyles: { bgColor: 'var(--primary)', textColor: 'var(--primary-foreground)' }
-  }
-];
+
 
 function HeroSection() {
   const navigate = useNavigate();
@@ -96,6 +60,60 @@ function HeroSection() {
             </button>
           </div>
 
+          {/* Features Section */}
+          <div className="w-full mt-24 md:mt-32 animate-[fadeInUp_.8s_.35s_ease_forwards] opacity-0">
+            {/* Header */}
+            <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+              <h2 className="text-4xl lg:text-5xl font-semibold bg-gradient-to-b from-foreground via-foreground/90 to-foreground/70 dark:from-white dark:via-gray-100 dark:to-gray-400 bg-clip-text text-transparent">
+                Built to cover your needs
+              </h2>
+              <p className="mt-4 text-muted-foreground text-lg">
+                Comprehensive weather analysis powered by NASA data and artificial intelligence
+              </p>
+            </div>
+
+            {/* Feature Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+              {/* Card 1: Historical Data */}
+              <div className="group text-center bg-card/60 backdrop-blur-xl border border-border/50 rounded-xl p-8 shadow-lg hover:shadow-2xl hover:border-border/70 transition-all duration-500 hover:-translate-y-2">
+                <div className="flex items-center justify-center w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-blue-500/20 to-cyan-500/20 group-hover:from-blue-500/30 group-hover:to-cyan-500/30 transition-all duration-500">
+                  <CloudSun className="w-8 h-8 text-blue-500 group-hover:scale-110 transition-transform duration-500" />
+                </div>
+                <h3 className="mt-6 font-semibold text-lg text-foreground">
+                  NASA Weather Data
+                </h3>
+                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                  Extensive historical weather data from NASA satellites, allowing you to analyze patterns and make informed decisions.
+                </p>
+              </div>
+
+              {/* Card 2: AI Powered */}
+              <div className="group text-center bg-card/60 backdrop-blur-xl border border-border/50 rounded-xl p-8 shadow-lg hover:shadow-2xl hover:border-border/70 transition-all duration-500 hover:-translate-y-2">
+                <div className="flex items-center justify-center w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-purple-500/20 to-pink-500/20 group-hover:from-purple-500/30 group-hover:to-pink-500/30 transition-all duration-500">
+                  <Brain className="w-8 h-8 text-purple-500 group-hover:scale-110 transition-transform duration-500" />
+                </div>
+                <h3 className="mt-6 font-semibold text-lg text-foreground">
+                  Powered By AI
+                </h3>
+                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                  Advanced AI analysis provides intelligent forecasts and personalized recommendations for your specific activities.
+                </p>
+              </div>
+
+              {/* Card 3: Safety First */}
+              <div className="group text-center bg-card/60 backdrop-blur-xl border border-border/50 rounded-xl p-8 shadow-lg hover:shadow-2xl hover:border-border/70 transition-all duration-500 hover:-translate-y-2">
+                <div className="flex items-center justify-center w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-green-500/20 to-emerald-500/20 group-hover:from-green-500/30 group-hover:to-emerald-500/30 transition-all duration-500">
+                  <Shield className="w-8 h-8 text-green-500 group-hover:scale-110 transition-transform duration-500" />
+                </div>
+                <h3 className="mt-6 font-semibold text-lg text-foreground">
+                  Safety & Preparedness
+                </h3>
+                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                  Get real-time risk assessments and safety alerts to ensure your outdoor events proceed without weather disruptions.
+                </p>
+              </div>
+            </div>
+          </div>
 
         </div>
       </div>
