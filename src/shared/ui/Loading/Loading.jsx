@@ -1,6 +1,5 @@
 import { MultiStepLoader as Loader } from "@/components/ui/multi-step-loader";
 import { Satellite, Sparkles } from "lucide-react";
-import skyraLogo from "@/shared/utils/assets/logo.webp";
 import "./loading.scss";
 
 const loadingStates = [
@@ -80,35 +79,7 @@ export function SplashScreen({ loading = true, isPWA = false }) {
             
             {/* Main content */}
             <div className="relative text-center space-y-8 px-4">
-                {/* Logo container with enhanced glass morphism */}
-                <div className="relative mx-auto">
-                    <div className="relative w-32 h-32 bg-primary/20 backdrop-blur-xl border border-primary/30 rounded-3xl flex items-center justify-center group shadow-2xl shadow-primary/20">
-                        {/* Gradient background */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-blue-500/10 rounded-3xl" />
-                        
-                        {/* Skyra Logo */}
-                        <div className="relative w-20 h-20 rounded-2xl overflow-hidden">
-                            <img 
-                                src={skyraLogo} 
-                                alt="Skyra Logo"
-                                className="w-full h-full object-contain filter drop-shadow-lg group-hover:scale-110 transition-transform duration-500"
-                                onError={(e) => {
-                                    // Fallback to Satellite icon if logo fails to load
-                                    e.target.style.display = 'none';
-                                    e.target.parentNode.innerHTML = '<div class="w-full h-full flex items-center justify-center"><svg class="w-12 h-12 text-primary" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/></svg></div>';
-                                }}
-                            />
-                        </div>
-                        
-                        {/* Floating sparkle */}
-                        <div className="absolute -top-3 -right-3 animate-bounce">
-                            <Sparkles className="w-6 h-6 text-yellow-400 filter drop-shadow-lg" />
-                        </div>
-                        
-                        {/* Pulsing ring */}
-                        <div className="absolute inset-0 border-2 border-primary/50 rounded-3xl animate-ping" style={{ animationDuration: '2s' }} />
-                    </div>
-                </div>
+
                 
                 {/* App name and description */}
                 <div className="space-y-4">

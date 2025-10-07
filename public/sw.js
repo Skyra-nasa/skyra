@@ -1,8 +1,12 @@
 // Service Worker for Skyra PWA
-const CACHE_NAME = 'skyra-v1';
-const API_CACHE = 'skyra-api-v1';
+const CACHE_VERSION = Date.now(); // Use timestamp for development
+const CACHE_NAME = `skyra-v${CACHE_VERSION}`;
+const API_CACHE = `skyra-api-v${CACHE_VERSION}`;
 const BACKGROUND_SYNC_TAG = 'skyra-background-sync';
 const NOTIFICATION_TAG = 'skyra-notification';
+
+// Development mode detection
+const isDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 
 // Cache strategy resources
 const STATIC_CACHE_URLS = [
@@ -116,6 +120,12 @@ async function handleStaticRequest(request) {
     }
   } catch {
     // If URL parsing fails, just try to fetch without caching
+    return fetch(request);
+  }
+  
+  // In development mode, always fetch fresh content
+  if (isDev) {
+    console.log('[SW Dev] Bypassing cache for:', request.url);
     return fetch(request);
   }
   

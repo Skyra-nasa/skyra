@@ -8,17 +8,30 @@ import { SplashScreen } from "./shared/ui/Loading/Loading"
 import { pwaService } from "./shared/utils/pwaService"
 import "./shared/pwa/pwa-splash.css"
 
+// Development cache clearing utility
+if (import.meta.env.DEV) {
+  import("./shared/utils/devCacheUtils.js");
+}
+
 function App() {
-  const [isInitializing, setIsInitializing] = useState(true);
+  // Only show splash screen if we're in PWA mode from the start
+  const [isInitializing, setIsInitializing] = useState(() => pwasplash.isPWAMode());
 
   useEffect(() => {
     // Initialize PWA service when app starts
     const initializePWA = async () => {
+      const isPWAMode = pwasplash.isPWAMode();
+      
+      // If not in PWA mode, skip initialization entirely
+      if (!isPWAMode) {
+        setIsInitializing(false);
+        return;
+      }
+
       try {
         await pwaService.init();
         console.log('PWA features initialized');
         
-        // Check if we should show the splash screen
         if (pwasplash.shouldShowSplash()) {
           await pwasplash.showSplashScreen();
         }
