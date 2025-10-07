@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, useContext } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo, useContext } from "react";
 import debounce from "lodash.debounce";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -20,7 +20,7 @@ const LocationStep = ({ selectedLocation, setSelectedLocation }) => {
   const searchContainerRef = useRef(null);
 
   // API search function
-  const searchCities = async (query) => {
+  const searchCities = useCallback(async (query) => {
     if (!query.trim() || query.length < 2) {
       setSearchResults([]);
       setShowSuggestions(false);
@@ -55,15 +55,24 @@ const LocationStep = ({ selectedLocation, setSelectedLocation }) => {
     } finally {
       setIsSearching(false);
     }
-  };
+  }, []);
 
   // Wrap with debounce
-  const debouncedSearch = useCallback(
-    debounce((value) => {
-      searchCities(value);
-    }, 500),
+  const debouncedSearch = useMemo(
+    () =>
+      debounce((value) => {
+        searchCities(value);
+      }, 500),
     [searchCities]
   );
+
+  useEffect(() => {
+    return () => {
+      if (debouncedSearch && debouncedSearch.cancel) {
+        debouncedSearch.cancel();
+      }
+    };
+  }, [debouncedSearch]);
 
   const handleCityChange = (e) => {
     const value = e.target.value;

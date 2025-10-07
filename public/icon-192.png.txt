@@ -1,0 +1,4 @@
+<!-- Simple 192x192 PNG icon placeholder -->
+<!-- This is a text file representing where the 192x192 icon should be placed -->
+<!-- You can generate proper PWA icons using tools like https://realfavicongenerator.net/ -->
+<!-- For now, copy your logo.webp and convert it to PNG format in different sizes -->

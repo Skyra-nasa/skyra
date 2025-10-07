@@ -61,7 +61,7 @@ function ActivityStep({ selectedActivity, setSelectedActivity, onNext, onLoading
     if (onNext && !selectedData.sendData) {
       setTimeout(() => onNext(), 250);
     }
-  }, [onNext, setSelectedActivity, startCustomEdit]);
+  }, [onNext, setSelectedActivity, startCustomEdit, selectedData]);
 
   const handleCustomSubmit = useCallback(() => {
     if (!customValue.trim()) return;
@@ -73,7 +73,7 @@ function ActivityStep({ selectedActivity, setSelectedActivity, onNext, onLoading
     if (onNext && !selectedData.sendData) {
       setTimeout(() => onNext(), 200);
     }
-  }, [customValue, onNext, setSelectedActivity]);
+  }, [customValue, onNext, setSelectedActivity, selectedData]);
 
   const handleCustomCancel = useCallback(() => {
     setIsCustomEditing(false);
