@@ -9,12 +9,26 @@ class PWASplashController {
 
   // Check if app was opened from PWA (home screen)
   isPWAMode() {
-    return (
-      window.matchMedia('(display-mode: standalone)').matches ||
-      window.navigator.standalone === true ||
-      document.referrer.includes('android-app://') ||
-      window.location.search.includes('pwa=true')
+    // iOS Safari PWA detection
+    const isIOSStandalone = window.navigator.standalone === true;
+    
+    // Modern browsers (Chrome, Edge, etc.)
+    const isStandaloneDisplay = window.matchMedia('(display-mode: standalone)').matches;
+    
+    // Android app detection
+    const isAndroidApp = document.referrer.includes('android-app://');
+    
+    // Development/testing flag
+    const isTestPWA = window.location.search.includes('pwa=true');
+    
+    // iOS Safari in standalone mode detection
+    const isIOSPWA = isIOSStandalone || (
+      /iPad|iPhone|iPod/.test(navigator.userAgent) &&
+      !window.MSStream &&
+      window.matchMedia('(display-mode: standalone)').matches
     );
+    
+    return isIOSPWA || isStandaloneDisplay || isAndroidApp || isTestPWA;
   }
 
   // Check if this is the first load in this session
